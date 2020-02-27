@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Map;
 
 /**
- * Bean for general settings in REST requests.
+ * Bean for user directory settings in REST requests.
  */
 @XmlRootElement(name = "userDirectory")
 public class UserDirectoryBean {

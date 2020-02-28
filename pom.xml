@@ -56,6 +56,7 @@
         <plugin.testrunner.version>2.0.1</plugin.testrunner.version>
         <atlassian.spring.scanner.version>2.1.5</atlassian.spring.scanner.version>
         <atlassian.plugin.key>${project.groupId}.${project.artifactId}</atlassian.plugin.key>
+        <atlassian.gadgets.version>4.3.2.1</atlassian.gadgets.version>
     </properties>
 
     <dependencies>
@@ -78,6 +79,26 @@
             <artifactId>atlassian-spring-scanner-annotation</artifactId>
             <version>${atlassian.spring.scanner.version}</version>
             <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.atlassian.gadgets</groupId>
+            <artifactId>atlassian-gadgets-api</artifactId>
+            <version>${atlassian.gadgets.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.atlassian.gadgets</groupId>
+            <artifactId>atlassian-gadgets-spi</artifactId>
+            <version>${atlassian.gadgets.version}</version>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>net.sourceforge.findbugs</groupId>
+                    <artifactId>jsr305</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>

@@ -78,4 +78,25 @@ public class UserResource {
         }
         return Response.status(BAD_REQUEST).entity(errorCollection).build();
     }
+
+    @PUT
+    @Path("/password")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response updateUserPassword(@QueryParam("username") String username, @QueryParam("password") String password) {
+        final ErrorCollection errorCollection = new ErrorCollection();
+        try {
+            User atlUser = userManager.getUser(username);
+            if (atlUser instanceof ConfluenceUserImpl) {
+                userManager.alterPassword(atlUser, password);
+                return getUser(username);
+            } else {
+                return Response.status(NOT_FOUND).build();
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            errorCollection.addErrorMessage(e.getMessage());
+        }
+        return Response.status(BAD_REQUEST).entity(errorCollection).build();
+    }
 }

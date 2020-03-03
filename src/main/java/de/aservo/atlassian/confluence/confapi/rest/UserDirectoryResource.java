@@ -8,6 +8,7 @@ import com.sun.jersey.spi.container.ResourceFilters;
 import de.aservo.atlassian.confluence.confapi.filter.AdminOnlyResourceFilter;
 import de.aservo.atlassian.confluence.confapi.model.ErrorCollection;
 import de.aservo.atlassian.confluence.confapi.model.UserDirectoryBean;
+import de.aservo.atlassian.confluence.confapi.service.BeanValidationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -60,6 +61,7 @@ public class UserDirectoryResource {
     public Response addDirectory(@QueryParam("test") Boolean testConnection, UserDirectoryBean directory) {
         final ErrorCollection errorCollection = new ErrorCollection();
         try {
+            BeanValidationService.validate(directory);
             DirectoryImpl atlDir = directory.buildDirectoryImpl();
             if (testConnection == null || testConnection) {
                 crowdDirectoryService.testConnection(atlDir);

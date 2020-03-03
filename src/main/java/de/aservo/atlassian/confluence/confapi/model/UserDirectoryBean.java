@@ -6,6 +6,8 @@ import com.atlassian.crowd.model.directory.DirectoryImpl;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Map;
@@ -23,21 +25,31 @@ public class UserDirectoryBean {
     private boolean active;
 
     @XmlElement
+    @NotNull
+    @Size(min = 1)
     private String name;
 
     @XmlElement
+    @NotNull
+    @Size(min = 1)
     private DirectoryType type;
 
     @XmlElement
     private String description;
 
     @XmlElement
+    @NotNull
+    @Size(min = 1)
     private String crowdUrl;
 
     @XmlElement
+    @NotNull
+    @Size(min = 1)
     private String appPassword;
 
     @XmlElement
+    @NotNull
+    @Size(min = 1)
     private String implClass;
 
     public UserDirectoryBean() {

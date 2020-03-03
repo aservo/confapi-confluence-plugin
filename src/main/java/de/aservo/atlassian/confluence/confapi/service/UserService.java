@@ -35,6 +35,7 @@ public class UserService {
     }
 
     public UserBean updateUser(UserBean user) throws EntityException, IllegalAccessException, UserNotFoundException {
+        BeanValidationService.validate(user);
         User atlUser = userManager.getUser(user.getUsername());
         if (atlUser instanceof ConfluenceUserImpl) {
             ConfluenceUserImpl confluenceUser = (ConfluenceUserImpl) atlUser;

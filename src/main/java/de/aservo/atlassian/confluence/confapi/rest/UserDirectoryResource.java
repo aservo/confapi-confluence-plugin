@@ -4,12 +4,13 @@ import com.atlassian.crowd.embedded.api.CrowdDirectoryService;
 import com.atlassian.crowd.embedded.api.Directory;
 import com.atlassian.crowd.model.directory.DirectoryImpl;
 import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
+import com.sun.jersey.spi.container.ResourceFilters;
+import de.aservo.atlassian.confluence.confapi.filter.AdminOnlyResourceFilter;
 import de.aservo.atlassian.confluence.confapi.model.ErrorCollection;
 import de.aservo.atlassian.confluence.confapi.model.UserDirectoryBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.inject.Named;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -23,7 +24,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 @Path("/user-directories")
 @Produces(MediaType.APPLICATION_JSON)
-@Named
+@ResourceFilters(AdminOnlyResourceFilter.class)
 public class UserDirectoryResource {
 
     private static final Logger log = LoggerFactory.getLogger(UserDirectoryResource.class);

@@ -3,12 +3,13 @@ package de.aservo.atlassian.confluence.confapi.rest;
 import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
 import com.atlassian.sal.api.license.LicenseHandler;
 import com.atlassian.sal.api.license.SingleProductLicenseDetailsView;
+import com.sun.jersey.spi.container.ResourceFilters;
+import de.aservo.atlassian.confluence.confapi.filter.AdminOnlyResourceFilter;
 import de.aservo.atlassian.confluence.confapi.model.ErrorCollection;
 import de.aservo.atlassian.confluence.confapi.model.LicenseBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.inject.Named;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -18,7 +19,7 @@ import javax.ws.rs.core.Response;
  */
 @Path("/license")
 @Produces(MediaType.APPLICATION_JSON)
-@Named
+@ResourceFilters(AdminOnlyResourceFilter.class)
 public class LicenceResource {
 
     private static final Logger log = LoggerFactory.getLogger(LicenceResource.class);

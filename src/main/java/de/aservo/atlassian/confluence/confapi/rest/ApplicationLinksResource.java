@@ -1,12 +1,13 @@
 package de.aservo.atlassian.confluence.confapi.rest;
 
+import com.sun.jersey.spi.container.ResourceFilters;
+import de.aservo.atlassian.confluence.confapi.filter.AdminOnlyResourceFilter;
 import de.aservo.atlassian.confluence.confapi.model.ApplicationLinkBean;
 import de.aservo.atlassian.confluence.confapi.model.ErrorCollection;
 import de.aservo.atlassian.confluence.confapi.service.ApplicationLinkService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.inject.Named;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -21,7 +22,7 @@ import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
  */
 @Path("/application-links")
 @Produces(MediaType.APPLICATION_JSON)
-@Named
+@ResourceFilters(AdminOnlyResourceFilter.class)
 public class ApplicationLinksResource {
 
     private static final Logger log = LoggerFactory.getLogger(ApplicationLinksResource.class);

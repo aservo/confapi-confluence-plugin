@@ -30,6 +30,11 @@ public class UserBean {
     @Size(min = 1)
     private String email;
 
+    /**
+     * Instantiates a new User bean.
+     *
+     * @param confluenceUser the confluence user
+     */
     public UserBean(ConfluenceUserImpl confluenceUser) {
         username = confluenceUser.getName();
         fullName = confluenceUser.getFullName();

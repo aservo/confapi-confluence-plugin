@@ -7,7 +7,16 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * The type Bean validation service.
+ */
 public class BeanValidationService {
+    /**
+     * Validates the given bean using javax.validation impl from hibernate reference.
+     *
+     * @param bean the bean
+     * @throws ValidationException the validation exception
+     */
     public static void validate(Object bean) throws ValidationException {
         ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
         Validator validator = validatorFactory.getValidator();

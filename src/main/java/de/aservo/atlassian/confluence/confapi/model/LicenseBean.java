@@ -34,6 +34,11 @@ public class LicenseBean {
     @XmlElement
     private int numUsers;
 
+    /**
+     * Instantiates a new License bean.
+     *
+     * @param productLicense the product license
+     */
     public LicenseBean(SingleProductLicenseDetailsView productLicense) {
         productName = productLicense.getProductDisplayName();
         licenseType = productLicense.getLicenseTypeName();

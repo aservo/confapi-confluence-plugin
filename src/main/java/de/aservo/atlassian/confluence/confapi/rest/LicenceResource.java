@@ -15,7 +15,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 /**
- * Resource to set mail server configuration.
+ * The type Licence resource.
  */
 @Path("/license")
 @Produces(MediaType.APPLICATION_JSON)
@@ -24,19 +24,27 @@ public class LicenceResource {
 
     private static final Logger log = LoggerFactory.getLogger(LicenceResource.class);
 
-    private static final String CONFLUENCE_APP_ID = "CONF";
+    /**
+     * The constant CONFLUENCE_APP_ID.
+     */
+    public static final String CONFLUENCE_APP_ID = "CONF";
 
     private final LicenseHandler licenseHandler;
 
     /**
-     * Constructor.
+     * Instantiates a new Licence resource.
      *
-     * @param licenseHandler the injected {@link LicenseHandler}
+     * @param licenseHandler the license handler
      */
     public LicenceResource(@ComponentImport LicenseHandler licenseHandler) {
         this.licenseHandler = licenseHandler;
     }
 
+    /**
+     * Gets license.
+     *
+     * @return the license
+     */
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public Response getLicense() {
@@ -53,6 +61,12 @@ public class LicenceResource {
         return Response.status(Response.Status.BAD_REQUEST).entity(errorCollection).build();
     }
 
+    /**
+     * Add license.
+     *
+     * @param licenseKey the license key
+     * @return the response
+     */
     @POST
     @Consumes({MediaType.TEXT_PLAIN})
     @Produces({MediaType.APPLICATION_JSON})

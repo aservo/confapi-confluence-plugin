@@ -8,17 +8,14 @@ import de.aservo.atlassian.confluence.confapi.service.ApplicationLinkService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 
 /**
- * Resource to set global permissions configuration.
+ * The type Application links resource.
  */
 @Path("/application-links")
 @Produces(MediaType.APPLICATION_JSON)
@@ -30,15 +27,21 @@ public class ApplicationLinksResource {
     private final ApplicationLinkService applicationLinkService;
 
     /**
-     * Constructor.
+     * Instantiates a new Application links resource.
      *
-     * @param applicationLinkService the injected {@link ApplicationLinkService}
+     * @param applicationLinkService the application link service
      */
     public ApplicationLinksResource(ApplicationLinkService applicationLinkService) {
         this.applicationLinkService = applicationLinkService;
     }
 
+    /**
+     * Gets application links.
+     *
+     * @return the application links
+     */
     @GET
+    @Produces(MediaType.APPLICATION_JSON)
     public Response getApplicationLinks() {
         final ErrorCollection errorCollection = new ErrorCollection();
         try {
@@ -50,7 +53,15 @@ public class ApplicationLinksResource {
         return Response.status(BAD_REQUEST).entity(errorCollection).build();
     }
 
+    /**
+     * Add application link.
+     *
+     * @param linkBean the link bean
+     * @return the response
+     */
     @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response addApplicationLink(ApplicationLinkBean linkBean) {
         final ErrorCollection errorCollection = new ErrorCollection();
         try {

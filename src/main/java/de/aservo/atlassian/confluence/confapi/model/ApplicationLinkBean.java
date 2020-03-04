@@ -59,6 +59,11 @@ public class ApplicationLinkBean {
     @Size(min = 1)
     private String password;
 
+    /**
+     * Instantiates a new Application link bean.
+     *
+     * @param linkDetails the link details
+     */
     public ApplicationLinkBean(ApplicationLink linkDetails) {
         serverId = linkDetails.getId().toString();
         appType = linkDetails.getType().toString();
@@ -68,6 +73,12 @@ public class ApplicationLinkBean {
         primary = linkDetails.isPrimary();
     }
 
+    /**
+     * To application link details application link details.
+     *
+     * @return the application link details
+     * @throws URISyntaxException the uri syntax exception
+     */
     public ApplicationLinkDetails toApplicationLinkDetails() throws URISyntaxException {
         return ApplicationLinkDetails.builder().name(name).displayUrl(new URI(displayUrl)).rpcUrl(new URI(rpcUrl)).isPrimary(primary).build();
     }

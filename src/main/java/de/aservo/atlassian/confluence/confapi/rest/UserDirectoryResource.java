@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Resource to set mail server configuration.
+ * The type User directory resource.
  */
 @Path("/user-directories")
 @Produces(MediaType.APPLICATION_JSON)
@@ -33,14 +33,19 @@ public class UserDirectoryResource {
     private final CrowdDirectoryService crowdDirectoryService;
 
     /**
-     * Constructor.
+     * Instantiates a new User directory resource.
      *
-     * @param crowdDirectoryService the injected {@link CrowdDirectoryService}
+     * @param crowdDirectoryService the crowd directory service
      */
     public UserDirectoryResource(@ComponentImport CrowdDirectoryService crowdDirectoryService) {
         this.crowdDirectoryService = checkNotNull(crowdDirectoryService);
     }
 
+    /**
+     * Gets directories.
+     *
+     * @return the directories
+     */
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public Response getDirectories() {
@@ -55,6 +60,13 @@ public class UserDirectoryResource {
         return Response.status(Response.Status.BAD_REQUEST).entity(errorCollection).build();
     }
 
+    /**
+     * Add directory.
+     *
+     * @param testConnection the test connection
+     * @param directory      the directory
+     * @return the response
+     */
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})

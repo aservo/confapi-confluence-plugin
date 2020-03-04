@@ -13,6 +13,9 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * The type User service.
+ */
 @ExportAsService
 @ConfluenceComponent
 public class UserService {
@@ -21,10 +24,23 @@ public class UserService {
 
     private final UserManager userManager;
 
+    /**
+     * Instantiates a new User service.
+     *
+     * @param userManager the user manager
+     */
     public UserService(@ComponentImport UserManager userManager) {
         this.userManager = userManager;
     }
 
+    /**
+     * Gets user.
+     *
+     * @param username the username
+     * @return the user
+     * @throws EntityException       the entity exception
+     * @throws UserNotFoundException the user not found exception
+     */
     public UserBean getUser(String username) throws EntityException, UserNotFoundException {
         User user = userManager.getUser(username);
         if (user instanceof ConfluenceUserImpl) {
@@ -34,6 +50,15 @@ public class UserService {
         }
     }
 
+    /**
+     * Update user bean.
+     *
+     * @param user the user
+     * @return the user bean
+     * @throws EntityException        the entity exception
+     * @throws IllegalAccessException the illegal access exception
+     * @throws UserNotFoundException  the user not found exception
+     */
     public UserBean updateUser(UserBean user) throws EntityException, IllegalAccessException, UserNotFoundException {
         BeanValidationService.validate(user);
         User atlUser = userManager.getUser(user.getUsername());
@@ -47,6 +72,15 @@ public class UserService {
         }
     }
 
+    /**
+     * Update user password.
+     *
+     * @param username the username
+     * @param password the password
+     * @return the user bean
+     * @throws EntityException       the entity exception
+     * @throws UserNotFoundException the user not found exception
+     */
     public UserBean updateUserPassword(String username, String password) throws EntityException, UserNotFoundException {
         User atlUser = userManager.getUser(username);
         if (atlUser instanceof ConfluenceUserImpl) {

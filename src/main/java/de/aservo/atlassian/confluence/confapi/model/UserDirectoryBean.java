@@ -3,8 +3,8 @@ package de.aservo.atlassian.confluence.confapi.model;
 import com.atlassian.crowd.embedded.api.Directory;
 import com.atlassian.crowd.embedded.api.DirectoryType;
 import com.atlassian.crowd.model.directory.DirectoryImpl;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -15,11 +15,19 @@ import java.util.Map;
 /**
  * Bean for user directory settings in REST requests.
  */
+@Data
+@NoArgsConstructor
 @XmlRootElement(name = "userDirectory")
 public class UserDirectoryBean {
 
-    private static final String ATTR_CROWD_URL = "crowd.server.url";
-    private static final String ATTR_CROWD_PASSWORD = "application.password";
+    /**
+     * The constant ATTR_CROWD_URL.
+     */
+    public static final String ATTR_CROWD_URL = "crowd.server.url";
+    /**
+     * The constant ATTR_CROWD_PASSWORD.
+     */
+    public static final String ATTR_CROWD_PASSWORD = "application.password";
 
     @XmlElement
     private boolean active;
@@ -52,65 +60,11 @@ public class UserDirectoryBean {
     @Size(min = 1)
     private String implClass;
 
-    public UserDirectoryBean() {
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public DirectoryType getType() {
-        return type;
-    }
-
-    public void setType(DirectoryType type) {
-        this.type = type;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getCrowdUrl() {
-        return crowdUrl;
-    }
-
-    public void setCrowdUrl(String crowdUrl) {
-        this.crowdUrl = crowdUrl;
-    }
-
-    public String getAppPassword() {
-        return appPassword;
-    }
-
-    public void setAppPassword(String appPassword) {
-        this.appPassword = appPassword;
-    }
-
-    public String getImplClass() {
-        return implClass;
-    }
-
-    public void setImplClass(String implClass) {
-        this.implClass = implClass;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
+    /**
+     * Build directory directory.
+     *
+     * @return the directory
+     */
     public DirectoryImpl buildDirectoryImpl() {
         DirectoryImpl directory = new DirectoryImpl();
         directory.setName(name);
@@ -123,6 +77,12 @@ public class UserDirectoryBean {
         return directory;
     }
 
+    /**
+     * Build user directory bean user directory bean.
+     *
+     * @param dir the dir
+     * @return the user directory bean
+     */
     public static UserDirectoryBean buildUserDirectoryBean(Directory dir) {
         Map<String, String> attributes = dir.getAttributes();
         UserDirectoryBean directoryBean = new UserDirectoryBean();
@@ -134,16 +94,4 @@ public class UserDirectoryBean {
         directoryBean.setImplClass(dir.getImplementationClass());
         return directoryBean;
     }
-
-    @Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this);
-    }
-
-    @Override
-    @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
-    public boolean equals(Object o) {
-        return EqualsBuilder.reflectionEquals(this, o);
-    }
-
 }

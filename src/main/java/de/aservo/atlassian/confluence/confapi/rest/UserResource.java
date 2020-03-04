@@ -15,7 +15,7 @@ import javax.ws.rs.core.Response;
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 
 /**
- * Resource to set mail server configuration.
+ * The type User resource.
  */
 @Path("/users")
 @Produces(MediaType.APPLICATION_JSON)
@@ -27,14 +27,20 @@ public class UserResource {
     private final UserService userService;
 
     /**
-     * Constructor.
+     * Instantiates a new User resource.
      *
-     * @param userService the injected {@link UserService}
+     * @param userService the user service
      */
     public UserResource(UserService userService) {
         this.userService = userService;
     }
 
+    /**
+     * Gets user.
+     *
+     * @param username the username
+     * @return the user
+     */
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public Response getUser(@QueryParam("username") String username) {
@@ -48,6 +54,12 @@ public class UserResource {
         return Response.status(BAD_REQUEST).entity(errorCollection).build();
     }
 
+    /**
+     * Update user.
+     *
+     * @param user the user
+     * @return the response
+     */
     @PUT
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
@@ -62,6 +74,13 @@ public class UserResource {
         return Response.status(BAD_REQUEST).entity(errorCollection).build();
     }
 
+    /**
+     * Update user password.
+     *
+     * @param username the username
+     * @param password the password
+     * @return the response
+     */
     @PUT
     @Path("/password")
     @Consumes({MediaType.APPLICATION_JSON})

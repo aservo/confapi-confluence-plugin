@@ -14,7 +14,7 @@ import javax.ws.rs.core.Response;
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 
 /**
- * Resource to set external gadgets configuration.
+ * The type External gadgets resource.
  */
 @Path("/gadgets/external")
 @Produces(MediaType.APPLICATION_JSON)
@@ -26,14 +26,19 @@ public class ExternalGadgetsResource {
     private final ExternalGadgetsService externalGadgetsService;
 
     /**
-     * Constructor.
+     * Instantiates a new External gadgets resource.
      *
-     * @param externalGadgetsService the injected {@link ExternalGadgetsService}
+     * @param externalGadgetsService the external gadgets service
      */
     public ExternalGadgetsResource(ExternalGadgetsService externalGadgetsService) {
         this.externalGadgetsService = externalGadgetsService;
     }
 
+    /**
+     * Gets gadgets.
+     *
+     * @return the gadgets
+     */
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public Response getGadgets() {
@@ -47,6 +52,13 @@ public class ExternalGadgetsResource {
         return Response.status(BAD_REQUEST).entity(errorCollection).build();
     }
 
+    /**
+     * Add gadget.
+     *
+     * @param testGadgetUrl the test gadget url
+     * @param gadgetUrl     the gadget url
+     * @return the response
+     */
     @PUT
     @Consumes({MediaType.TEXT_PLAIN})
     @Produces({MediaType.APPLICATION_JSON})

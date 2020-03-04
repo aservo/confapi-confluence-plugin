@@ -24,7 +24,7 @@ import java.util.stream.StreamSupport;
 
 /**
  * The type External gadgets service. This work is insipred by class AddOrRemoveGadgetSpecAction of plugin file gadgets-plugin-9.0.4.jar
- *
+ * <p>
  * Note: if ever needed: com.atlassian.gadgets.GadgetSpecProvider provides internal gadget specs
  */
 @ExportAsService

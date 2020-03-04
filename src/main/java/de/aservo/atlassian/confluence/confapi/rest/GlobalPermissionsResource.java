@@ -18,7 +18,7 @@ import javax.ws.rs.core.Response;
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 
 /**
- * Resource to set global permissions configuration.
+ * The type Global permissions resource.
  */
 @Path("/permissions/anonymous-access")
 @Produces(MediaType.APPLICATION_JSON)
@@ -30,14 +30,21 @@ public class GlobalPermissionsResource {
     private final AnonymousUserPermissionsService anonymousUserPermissionsService;
 
     /**
-     * Constructor.
+     * Instantiates a new Global permissions resource.
      *
-     * @param anonymousUserPermissionsService the injected {@link AnonymousUserPermissionsService}
+     * @param anonymousUserPermissionsService the anonymous user permissions service
      */
     public GlobalPermissionsResource(@ComponentImport AnonymousUserPermissionsService anonymousUserPermissionsService) {
         this.anonymousUserPermissionsService = anonymousUserPermissionsService;
     }
 
+    /**
+     * Sets global access permissions.
+     *
+     * @param activateUse          the activate use
+     * @param activateViewProfiles the activate view profiles
+     * @return the global access permissions
+     */
     @PUT
     public Response setGlobalAccessPermissions(@QueryParam("activateUse") boolean activateUse, @QueryParam("activateViewProfiles") boolean activateViewProfiles) {
         final ErrorCollection errorCollection = new ErrorCollection();

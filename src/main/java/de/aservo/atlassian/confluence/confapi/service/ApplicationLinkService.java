@@ -26,6 +26,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+/**
+ * The type Application link service.
+ */
 @ExportAsService
 @ConfluenceComponent
 public class ApplicationLinkService {
@@ -35,18 +38,37 @@ public class ApplicationLinkService {
     private final MutatingApplicationLinkService applicationLinkService;
     private final TypeAccessor typeAccessor;
 
+    /**
+     * Instantiates a new Application link service.
+     *
+     * @param applicationLinkService the application link service
+     * @param typeAccessor           the type accessor
+     */
     public ApplicationLinkService(@ComponentImport MutatingApplicationLinkService applicationLinkService,
                                   @ComponentImport TypeAccessor typeAccessor) {
         this.applicationLinkService = applicationLinkService;
         this.typeAccessor = typeAccessor;
     }
 
+    /**
+     * Gets application links.
+     *
+     * @return the application links
+     */
     public List<ApplicationLinkBean> getApplicationLinks() {
         Iterable<ApplicationLink> applicationLinksIterable = applicationLinkService.getApplicationLinks();
         return StreamSupport.stream(applicationLinksIterable.spliterator(), false)
                 .map(ApplicationLinkBean::new).collect(Collectors.toList());
     }
 
+    /**
+     * Add application link.
+     *
+     * @param linkBean the link bean
+     * @throws URISyntaxException                   the uri syntax exception
+     * @throws ManifestNotFoundException            the manifest not found exception
+     * @throws AuthenticationConfigurationException the authentication configuration exception
+     */
     public void addApplicationLink(ApplicationLinkBean linkBean) throws URISyntaxException, ManifestNotFoundException, AuthenticationConfigurationException {
         BeanValidationService.validate(linkBean);
         ApplicationLinkDetails linkDetails = linkBean.toApplicationLinkDetails();

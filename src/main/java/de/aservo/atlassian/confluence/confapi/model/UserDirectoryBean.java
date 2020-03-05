@@ -39,7 +39,6 @@ public class UserDirectoryBean {
 
     @XmlElement
     @NotNull
-    @Size(min = 1)
     private DirectoryType type;
 
     @XmlElement

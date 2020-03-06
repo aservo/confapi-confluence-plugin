@@ -1,8 +1,4 @@
-[![ASERVO Software GmbH](https://aservo.github.io/img/aservo_atlassian_banner.png)](https://www.aservo.com/en/atlassian)
-
-ConfAPI for Confluence
-======================
-
+# [![ASERVO Software GmbH](https://aservo.github.io/img/aservo_atlassian_banner.png)](https://www.aservo.com/en/atlassian)ConfAPI for Confluence
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.aservo.atlassian/confluence-confapi-plugin/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.aservo.atlassian/confluence-confapi-plugin)
 [![Build Status](https://circleci.com/gh/aservo/confluence-confapi-plugin.svg?style=shield)](https://circleci.com/gh/aservo/confluence-confapi-plugin)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=aservo_confluence-confapi-plugin&metric=coverage)](https://sonarcloud.io/dashboard?id=aservo_confluence-confapi-plugin)
@@ -11,192 +7,182 @@ ConfAPI for Confluence
 
 REST API for automated Confluence configuration.
 
-https://developer.atlassian.com/display/DOCS/Introduction+to+the+Atlassian+Plugin+SDK
 
-Resources
----------
 
-All resources produce JSON (media type:  `application/json`) results.
+**Contact information:**  
+Kai Lehmann  
+https://www.aservo.com/  
+klehmann@aservo.com  
 
-### Settings
+**License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-Access general Confluence settings like the base url or the title.
+### /application-links
 
-* #### `GET /rest/confapi/1/settings`
+#### GET
+##### Summary:
 
-  Get Confluence application settings.
+Retrieves currently configured application links
 
-  __Responses__
+##### Description:
 
-  ![Status 200][status-200]
-
-  ```javascript
+Upon successful request, creates a list of `ApplicationLinkBean` objects, e.g. 
+```
+[
   {
-    "baseurl": "http://localhost:1990/confluence",
-    "title": "Your Confluence"
+    "serverId": "9f2d636e-c842-3388-8a66-17c1b951dd45",
+    "appType": "jira",
+    "name": "Jira TEST",
+    "displayUrl": "http://localhost:2990/jira",
+    "rpcUrl": "http://localhost:2990/jira",
+    "primary": true
   }
-  ```
+]
+```
 
-  ![Status 401][status-401]
+##### Responses
 
-  Returned if the current user is not authenticated.
+| Code | Description |
+| ---- | ----------- |
+| ![Status 200][status-200] | List of application links |
+| ![Status 400][status-400] | An error occured while retrieving the application links |
 
-  ![Status 403][status-403]
+#### POST
+##### Summary:
 
-  Returned if the current user is not an administrator.
+Adds a new application link
 
-* #### `PUT /rest/confapi/1/settings`
+##### Description:
 
-  Set Confluence application settings.
+Upon successful request, returns a list of all configured `ApplicationLinkBean` object
 
-  __Request Body__
+##### Responses
 
-  Media type: `application/json`
+| Code | Description |
+| ---- | ----------- |
+| ![Status 200][status-200] | List of all configured application links |
+| ![Status 400][status-400] | An error occured while creating the application link |
 
-  Content: Settings, for example:
+### /gadgets/external
 
-  ```javascript
-  {
-    "baseurl": "http://localhost:1990/confluence",
-    "title": "Your Confluence"
-  }
-  ```
+#### GET
+##### Summary:
 
-  __Request Parameters__
+Retrieves currently configured external gadgets
 
-  None.
+##### Description:
 
-  __Responses__
+Upon successful request, returns a list of `String` containing all configured gadget configuration urls
 
-  ![Status 200][status-200]
+##### Responses
 
-  Returned if request could be executed without any exceptions.
+| Code | Description |
+| ---- | ----------- |
+| ![Status 200][status-200] | List of configured gadget links |
+| ![Status 400][status-400] | An error occured while retrieving the gadget links |
 
-  ![Status 401][status-401]
+#### POST
+##### Summary:
 
-  Returned if the current user is not authenticated.
+Adds a new external gadget link
 
-  ![Status 403][status-403]
+##### Description:
 
-  Returned if the current user is not an administrator.
+Upon successful request, returns a list of `String` containing all configured gadget configuration urls
 
-### SMTP Mail Server
+##### Parameters
 
-Although this does not always seem to make any sense, Confluence allows
-defining multiple mail servers. This REST API only allows creating,
-updating and deleting one single mail server.
+| Name | Located in | Description | Required | Schema |
+| ---- | ---------- | ----------- | -------- | ---- |
+| test | query |  | No | boolean |
 
-* #### `GET /rest/confapi/1/mail/smtp`
+##### Responses
 
-  Get the configuration of the SMTP mail server, if any server is defined.
+| Code | Description |
+| ---- | ----------- |
+| ![Status 200][status-200] | All configured gadget links |
+| ![Status 400][status-400] | An error occured while creating the gadget link |
 
-  __Responses__
+### /permissions/anonymous-access
 
-  ![Status 200][status-200]
+#### PUT
+##### Summary:
 
-  ```javascript
-  {
-    "name": "Localhost",
-    "description": "The localhost SMTP server",
-    "from": "confluence@localhost",
-    "prefix": "Confluence",
-    "protocol": "smtp",
-    "host": "localhost",
-    "port": 25,
-    "tls", false,
-    "timeout": 10000,
-    "username": "admin",
-    "password": "admin"
-  }
-  ```
+Anonymous access
 
-  ![Status 401][status-401]
+##### Description:
 
-  Returned if the current user is not authenticated.
+Sets global permissions for anonymous access to public pages and user profiles
 
-  ![Status 403][status-403]
+##### Parameters
 
-  Returned if the current user is not an administrator.
+| Name | Located in | Description | Required | Schema |
+| ---- | ---------- | ----------- | -------- | ---- |
+| activateUse | query |  | No | boolean |
+| activateViewProfiles | query |  | No | boolean |
 
-  ![Status 404][status-404]
+##### Responses
 
-  Returned if no SMTP mail server is configured.
+| Code | Description |
+| ---- | ----------- |
+| ![Status 200][status-200] | access successfully set |
+| ![Status 400][status-400] | An error occured while setting the access |
 
-* #### `PUT /rest/confapi/1/mail/smtp`
+### /license
 
-  Set the configuration of the SMTP mail server.
+#### GET
+##### Summary:
 
-  __Request Body__
+Retrieves license information
 
-  Media type: `application/json`
+##### Description:
 
-  Content: Settings, for example:
+Upon successful request, returns a `LicenseBean` object containing license details, e.g. 
+```
+{
+  "productName": "Confluence",
+  "licenseType": "TESTING",
+  "organization": "Atlassian",
+  "description": "Test license for plugin developers",
+  "expiryDate": 1583671644086,
+  "numUsers": 25
+}
+```
 
-  ```javascript
-  {
-    "name": "Localhost",
-    "description": "The localhost SMTP server",
-    "from": "confluence@localhost",
-    "prefix": "Confluence",
-    "protocol": "smtp",
-    "host": "localhost",
-    "port": 25,
-    "tls", false,
-    "timeout": 10000,
-    "username": "admin",
-    "password": "admin"
-  }
-  ```
+##### Responses
 
-  __Request Parameters__
+| Code | Description |
+| ---- | ----------- |
+| ![Status 200][status-200] | License details |
+| ![Status 400][status-400] | An error occured while retrieving the license infos |
 
-  None.
+#### POST
+##### Summary:
 
-  __Responses__
+Adds a new license
 
-  ![Status 200][status-200]
+##### Description:
 
-  Returned if the request could be executed without any exceptions.
+Upon successful request, returns a `LicenseBean` object containing license details
 
-  ![Status 400][status-400]
+##### Responses
 
-  Returned if the request caused exceptions.
+| Code | Description |
+| ---- | ----------- |
+| ![Status 200][status-200] | License details for the added license |
+| ![Status 400][status-400] | An error occured while setting the new license |
 
-  The response will contain a list of errors that occurred while setting
-  some specific values such as a string that was too long, for example:
+### /mail/pop
 
-  ```
-  {
-    "errorMessages": [
-        "..."
-    ]
-  }
-  ```
+#### GET
+##### Summary:
 
-  ![Status 401][status-401]
+Retrieves the current POP mailserver configuration
 
-  Returned if the current user is not authenticated.
+##### Description:
 
-  ![Status 403][status-403]
-
-  Returned if the current user is not an administrator.
-
-### POP Mail Server
-
-Although this does not always seem to make any sense, Confluence allows
-defining multiple mail servers. This REST API only allows creating,
-updating and deleting one single mail server.
-
-* #### `GET /rest/confapi/1/mail/pop`
-
-  Get the configuration of the POP mail server, if any server is defined.
-
-  __Responses__
-
-  ![Status 200][status-200]
-
-  ```javascript
-  {
+Returns a `PopMailServerBean` object with the configuration of the POP mail server, if any server is defined.., e.g. 
+```
+{
     "name": "Localhost",
     "description": "The localhost SMTP server",
     "protocol": "pop",
@@ -205,79 +191,257 @@ updating and deleting one single mail server.
     "timeout": 10000,
     "username": "admin",
     "password": "admin"
-  }
-  ```
+}
+```
 
-  ![Status 401][status-401]
+##### Responses
 
-  Returned if the current user is not authenticated.
+| Code | Description |
+| ---- | ----------- |
+| ![Status 200][status-200] | pop mailserver configuration |
+| ![Status 400][status-400] | An error occured while retrieving the settings |
 
-  ![Status 403][status-403]
+#### PUT
+##### Summary:
 
-  Returned if the current user is not an administrator.
+Updates the POP mailserver configuration
 
-  ![Status 404][status-404]
+##### Description:
 
-  Returned if no POP mail server is configured.
+Upon successful request, returns a `PopMailServerBean` object containing the updates settings
 
-* #### `PUT /rest/confapi/1/mail/pop`
+##### Responses
 
-  Set the configuration of the POP mail server.
+| Code | Description |
+| ---- | ----------- |
+| ![Status 200][status-200] | updated settings object |
+| ![Status 400][status-400] | An error occured while updating the settings |
 
-  __Request Body__
+### /mail/smtp
 
-  Media type: `application/json`
+#### GET
+##### Summary:
 
-  Content: Settings, for example:
+Retrieves the current SMTP mailserver configuration
 
-  ```javascript
-  {
+##### Description:
+
+Returns a `SmtpMailServerBean` object with the configuration of the SMTP mail server, if any server is defined.., e.g. 
+```
+{
     "name": "Localhost",
     "description": "The localhost SMTP server",
+    "from": "confluence@localhost",
+    "prefix": "Confluence",
     "protocol": "smtp",
     "host": "localhost",
-    "port": 100,
+    "port": 25,
+    "tls", false,
     "timeout": 10000,
     "username": "admin",
     "password": "admin"
-  }
-  ```
+}
+```
 
-  __Request Parameters__
+##### Responses
 
-  None.
+| Code | Description |
+| ---- | ----------- |
+| ![Status 200][status-200] | smtp mailserver configuration |
+| ![Status 400][status-400] | An error occured while retrieving the settings |
 
-  __Responses__
+#### PUT
+##### Summary:
 
-  ![Status 200][status-200]
+Updates the SMTP mailserver configuration
 
-  Returned if the request could be executed without any exceptions.
+##### Description:
 
-  ![Status 400][status-400]
+Upon successful request, returns a `SmtpMailServerBean` object containing the updates settings
 
-  Returned if the request caused exceptions.
+##### Responses
 
-  The response will contain a list of errors that occurred while setting
-  some specific values such as a string that was too long, for example:
+| Code | Description |
+| ---- | ----------- |
+| ![Status 200][status-200] | updated settings object |
+| ![Status 400][status-400] | An error occured while updating the settings |
 
-  ```
+### /ping
+
+#### GET
+##### Summary:
+
+Ping
+
+##### Description:
+
+Simple connectivity check
+
+##### Responses
+
+| Code | Description |
+| ---- | ----------- |
+| ![Status 200][status-200] | returns pong |
+
+### /settings
+
+#### GET
+##### Summary:
+
+Get Confluence application settings
+
+##### Description:
+
+Returns a `SettingsBean` object with general Confluence settings like the base url or the title., e.g. 
+```
+{
+   "baseurl": "http://localhost:1990/confluence",
+   "title": "Your Confluence"
+}
+```
+
+##### Responses
+
+| Code | Description |
+| ---- | ----------- |
+| ![Status 200][status-200] | settings object |
+| ![Status 400][status-400] | An error occured while retrieving the settings |
+
+#### PUT
+##### Summary:
+
+Updates Confluence application settings
+
+##### Description:
+
+Upon successful request, returns a `SettingsBean` object containing the updates settings
+
+##### Responses
+
+| Code | Description |
+| ---- | ----------- |
+| ![Status 200][status-200] | updated settings object |
+| ![Status 400][status-400] | An error occured while updating the settings |
+
+### /user-directories
+
+#### GET
+##### Summary:
+
+Retrieves user directory information
+
+##### Description:
+
+Upon successful request, returns a list of `UserDirectoryBean` object containing user directory details, e.g. 
+```
+[
   {
-    "errorMessages": [
-        "..."
-    ]
+    "active": true,
+    "name": "Confluence Internal Directory",
+    "type": "INTERNAL",
+    "description": "Confluence default internal directory",
+    "implClass": "com.atlassian.crowd.directory.InternalDirectory"
   }
-  ```
+]
+```
 
-  ![Status 401][status-401]
+##### Responses
 
-  Returned if the current user is not authenticated.
+| Code | Description |
+| ---- | ----------- |
+| ![Status 200][status-200] | user directory details list |
+| ![Status 400][status-400] | An error occured while retrieving the user directory list |
 
-  ![Status 403][status-403]
+#### POST
+##### Summary:
 
-  Returned if the current user is not an administrator.
+Adds a new user directory
 
-[status-200]: https://img.shields.io/badge/status-200-brightgreen.svg
-[status-400]: https://img.shields.io/badge/status-400-red.svg
-[status-401]: https://img.shields.io/badge/status-401-red.svg
-[status-403]: https://img.shields.io/badge/status-403-red.svg
-[status-404]: https://img.shields.io/badge/status-404-red.svg
+##### Description:
+
+Upon successful request, returns the added `UserDirectoryBean` object
+
+##### Parameters
+
+| Name | Located in | Description | Required | Schema |
+| ---- | ---------- | ----------- | -------- | ---- |
+| test | query |  | No | boolean |
+
+##### Responses
+
+| Code | Description |
+| ---- | ----------- |
+| ![Status 200][status-200] | user directory added |
+| ![Status 400][status-400] | An error occured while setting adding the new user directory |
+
+### /users
+
+#### GET
+##### Summary:
+
+Retrieves user information
+
+##### Description:
+
+Upon successful request, returns a `UserBean` object containing user details, e.g. 
+```
+{
+  "username": "admin",
+  "fullName": "admin",
+  "email": "admin@example.com"
+}
+```
+
+##### Parameters
+
+| Name | Located in | Description | Required | Schema |
+| ---- | ---------- | ----------- | -------- | ---- |
+| username | query |  | No | string |
+
+##### Responses
+
+| Code | Description |
+| ---- | ----------- |
+| ![Status 200][status-200] | user details |
+| ![Status 400][status-400] | An error occured while retrieving the user details |
+
+#### PUT
+##### Summary:
+
+Updates user details
+
+##### Description:
+
+Upon successful request, returns the updated `UserBean` object. NOTE: Currently only the email address is updated from the provided `UserBean` parameter.
+
+##### Responses
+
+| Code | Description |
+| ---- | ----------- |
+| ![Status 200][status-200] | updated user details |
+| ![Status 400][status-400] | An error occured while updating the user |
+
+### /users/password
+
+#### PUT
+##### Summary:
+
+Updates the user password
+
+##### Description:
+
+Upon successful request, returns the updated `UserBean` object.
+
+##### Parameters
+
+| Name | Located in | Description | Required | Schema |
+| ---- | ---------- | ----------- | -------- | ---- |
+| username | query |  | No | string |
+| password | query |  | No | string |
+
+##### Responses
+
+| Code | Description |
+| ---- | ----------- |
+| ![Status 200][status-200] | updated user details |
+| ![Status 400][status-400] | An error occured while updating the user password |

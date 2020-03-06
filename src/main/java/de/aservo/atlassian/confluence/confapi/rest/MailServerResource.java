@@ -14,6 +14,11 @@ import de.aservo.atlassian.confluence.confapi.model.ErrorCollection;
 import de.aservo.atlassian.confluence.confapi.model.PopMailServerBean;
 import de.aservo.atlassian.confluence.confapi.model.SmtpMailServerBean;
 import de.aservo.atlassian.confluence.confapi.util.MailProtocolUtil;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,6 +55,26 @@ public class MailServerResource {
 
     @GET
     @Path("smtp")
+    @Operation(summary = "Retrieves the current SMTP mailserver configuration",
+            description = "Returns a `SmtpMailServerBean` object with the configuration of the SMTP mail server, if any server is defined.., e.g. \n```\n" +
+                    "{\n" +
+                    "    \"name\": \"Localhost\",\n" +
+                    "    \"description\": \"The localhost SMTP server\",\n" +
+                    "    \"from\": \"confluence@localhost\",\n" +
+                    "    \"prefix\": \"Confluence\",\n" +
+                    "    \"protocol\": \"smtp\",\n" +
+                    "    \"host\": \"localhost\",\n" +
+                    "    \"port\": 25,\n" +
+                    "    \"tls\", false,\n" +
+                    "    \"timeout\": 10000,\n" +
+                    "    \"username\": \"admin\",\n" +
+                    "    \"password\": \"admin\"\n" +
+                    "}" +
+                    "\n```",
+            responses = {
+                    @ApiResponse(responseCode = "![Status 200][status-200]", description = "smtp mailserver configuration", content = @Content(schema = @Schema(implementation = SmtpMailServerBean.class))),
+                    @ApiResponse(responseCode = "![Status 400][status-400]", description = "An error occured while retrieving the settings")
+            })
     public Response getSmtpMailServer() {
         final ErrorCollection errorCollection = new ErrorCollection();
 
@@ -68,6 +93,13 @@ public class MailServerResource {
     @PUT
     @Path("smtp")
     @Consumes(MediaType.APPLICATION_JSON)
+    @Operation(summary = "Updates the SMTP mailserver configuration",
+            description = "Upon successful request, returns a `SmtpMailServerBean` object containing the updates settings",
+            responses = {
+                    @ApiResponse(responseCode = "![Status 200][status-200]", description = "updated settings object", content = @Content(schema = @Schema(implementation = SmtpMailServerBean.class))),
+                    @ApiResponse(responseCode = "![Status 400][status-400]", description = "An error occured while updating the settings")
+            },
+            requestBody = @RequestBody(description = "The mailserver configuration to update", required = true, content = @Content(schema = @Schema(implementation = SmtpMailServerBean.class))))
     public Response putSmtpMailServer(
             final SmtpMailServerBean bean) {
 
@@ -133,6 +165,23 @@ public class MailServerResource {
 
     @GET
     @Path("pop")
+    @Operation(summary = "Retrieves the current POP mailserver configuration",
+            description = "Returns a `PopMailServerBean` object with the configuration of the POP mail server, if any server is defined.., e.g. \n```\n" +
+                    "{\n" +
+                    "    \"name\": \"Localhost\",\n" +
+                    "    \"description\": \"The localhost SMTP server\",\n" +
+                    "    \"protocol\": \"pop\",\n" +
+                    "    \"host\": \"localhost\",\n" +
+                    "    \"port\": 110,\n" +
+                    "    \"timeout\": 10000,\n" +
+                    "    \"username\": \"admin\",\n" +
+                    "    \"password\": \"admin\"\n" +
+                    "}" +
+                    "\n```",
+            responses = {
+                    @ApiResponse(responseCode = "![Status 200][status-200]", description = "pop mailserver configuration", content = @Content(schema = @Schema(implementation = PopMailServerBean.class))),
+                    @ApiResponse(responseCode = "![Status 400][status-400]", description = "An error occured while retrieving the settings")
+            })
     public Response getPopMailServer() {
         final ErrorCollection errorCollection = new ErrorCollection();
 
@@ -151,6 +200,13 @@ public class MailServerResource {
     @PUT
     @Path("pop")
     @Consumes(MediaType.APPLICATION_JSON)
+    @Operation(summary = "Updates the POP mailserver configuration",
+            description = "Upon successful request, returns a `PopMailServerBean` object containing the updates settings",
+            responses = {
+                    @ApiResponse(responseCode = "![Status 200][status-200]", description = "updated settings object", content = @Content(schema = @Schema(implementation = PopMailServerBean.class))),
+                    @ApiResponse(responseCode = "![Status 400][status-400]", description = "An error occured while updating the settings")
+            },
+            requestBody = @RequestBody(description = "The mailserver configuration to update", required = true, content = @Content(schema = @Schema(implementation = PopMailServerBean.class))))
     public Response putPopMailServer(
             final PopMailServerBean bean) {
 

@@ -6,9 +6,16 @@ import com.atlassian.crowd.model.directory.DirectoryImpl;
 import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
 import com.sun.jersey.spi.container.ResourceFilters;
 import de.aservo.atlassian.confluence.confapi.filter.AdminOnlyResourceFilter;
+import de.aservo.atlassian.confluence.confapi.model.ApplicationLinkBean;
 import de.aservo.atlassian.confluence.confapi.model.ErrorCollection;
 import de.aservo.atlassian.confluence.confapi.model.UserDirectoryBean;
 import de.aservo.atlassian.confluence.confapi.service.BeanValidationService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,6 +55,22 @@ public class UserDirectoryResource {
      */
     @GET
     @Produces({MediaType.APPLICATION_JSON})
+    @Operation(summary = "Retrieves user directory information",
+            description = "Upon successful request, returns a list of `UserDirectoryBean` object containing user directory details, e.g. \n```\n" +
+                    "[\n" +
+                    "  {\n" +
+                    "    \"active\": true,\n" +
+                    "    \"name\": \"Confluence Internal Directory\",\n" +
+                    "    \"type\": \"INTERNAL\",\n" +
+                    "    \"description\": \"Confluence default internal directory\",\n" +
+                    "    \"implClass\": \"com.atlassian.crowd.directory.InternalDirectory\"\n" +
+                    "  }\n" +
+                    "]" +
+                    "\n```",
+            responses = {
+                    @ApiResponse(responseCode = "![Status 200][status-200]", description = "user directory details list", content = @Content(schema = @Schema(implementation = UserDirectoryBean.class))),
+                    @ApiResponse(responseCode = "![Status 400][status-400]", description = "An error occured while retrieving the user directory list")
+            })
     public Response getDirectories() {
         final ErrorCollection errorCollection = new ErrorCollection();
         try {
@@ -70,6 +93,14 @@ public class UserDirectoryResource {
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
+    @Operation(summary = "Adds a new user directory",
+            description = "Upon successful request, returns the added `UserDirectoryBean` object",
+            responses = {
+                    @ApiResponse(responseCode = "![Status 200][status-200]", description = "user directory added", content = @Content(schema = @Schema(implementation = ApplicationLinkBean.class))),
+                    @ApiResponse(responseCode = "![Status 400][status-400]", description = "An error occured while setting adding the new user directory")
+            },
+            parameters = @Parameter(description = "Whether or not to test the connection to the user directory service, e.g. CROWD (DEFAULT = true)", schema = @Schema(implementation = Boolean.class)),
+            requestBody = @RequestBody(description = "The user directory to add", required = true, content = @Content(schema = @Schema(implementation = UserDirectoryBean.class))))
     public Response addDirectory(@QueryParam("test") Boolean testConnection, UserDirectoryBean directory) {
         final ErrorCollection errorCollection = new ErrorCollection();
         try {

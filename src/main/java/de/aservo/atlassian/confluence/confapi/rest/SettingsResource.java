@@ -6,6 +6,11 @@ import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
 import com.sun.jersey.spi.container.ResourceFilters;
 import de.aservo.atlassian.confluence.confapi.filter.AdminOnlyResourceFilter;
 import de.aservo.atlassian.confluence.confapi.model.SettingsBean;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.inject.Inject;
@@ -35,6 +40,17 @@ public class SettingsResource {
     }
 
     @GET
+    @Operation(summary = "Get Confluence application settings",
+            description = "Returns a `SettingsBean` object with general Confluence settings like the base url or the title., e.g. \n```\n" +
+                    "{\n" +
+                    "   \"baseurl\": \"http://localhost:1990/confluence\",\n" +
+                    "   \"title\": \"Your Confluence\"\n" +
+                    "}" +
+                    "\n```",
+            responses = {
+                    @ApiResponse(responseCode = "![Status 200][status-200]", description = "settings object", content = @Content(schema = @Schema(implementation = SettingsBean.class))),
+                    @ApiResponse(responseCode = "![Status 400][status-400]", description = "An error occured while retrieving the settings")
+            })
     public Response getSettings() {
         final Settings settings = settingsManager.getGlobalSettings();
 
@@ -47,6 +63,13 @@ public class SettingsResource {
     }
 
     @PUT
+    @Operation(summary = "Updates Confluence application settings",
+            description = "Upon successful request, returns a `SettingsBean` object containing the updates settings",
+            responses = {
+                    @ApiResponse(responseCode = "![Status 200][status-200]", description = "updated settings object", content = @Content(schema = @Schema(implementation = SettingsBean.class))),
+                    @ApiResponse(responseCode = "![Status 400][status-400]", description = "An error occured while updating the settings")
+            },
+            requestBody = @RequestBody(description = "The product license string to add", required = true, content = @Content(schema = @Schema(implementation = SettingsBean.class))))
     public Response putSettings(
             final SettingsBean bean) {
 

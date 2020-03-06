@@ -4,6 +4,12 @@ import com.sun.jersey.spi.container.ResourceFilters;
 import de.aservo.atlassian.confluence.confapi.filter.AdminOnlyResourceFilter;
 import de.aservo.atlassian.confluence.confapi.model.ErrorCollection;
 import de.aservo.atlassian.confluence.confapi.service.ExternalGadgetsService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,6 +47,12 @@ public class ExternalGadgetsResource {
      */
     @GET
     @Produces({MediaType.APPLICATION_JSON})
+    @Operation(summary = "Retrieves currently configured external gadgets",
+            description = "Upon successful request, returns a list of `String` containing all configured gadget configuration urls",
+            responses = {
+                    @ApiResponse(responseCode = "![Status 200][status-200]", description = "List of configured gadget links", content = @Content(schema = @Schema(implementation = String.class))),
+                    @ApiResponse(responseCode = "![Status 400][status-400]", description = "An error occured while retrieving the gadget links")
+            })
     public Response getGadgets() {
         final ErrorCollection errorCollection = new ErrorCollection();
         try {
@@ -59,9 +71,17 @@ public class ExternalGadgetsResource {
      * @param gadgetUrl     the gadget url
      * @return the response
      */
-    @PUT
+    @POST
     @Consumes({MediaType.TEXT_PLAIN})
     @Produces({MediaType.APPLICATION_JSON})
+    @Operation(summary = "Adds a new external gadget link",
+            description = "Upon successful request, returns a list of `String` containing all configured gadget configuration urls",
+            responses = {
+                    @ApiResponse(responseCode = "![Status 200][status-200]", description = "All configured gadget links", content = @Content(schema = @Schema(implementation = String.class))),
+                    @ApiResponse(responseCode = "![Status 400][status-400]", description = "An error occured while creating the gadget link")
+            },
+            parameters = @Parameter(description = "Whether or not to test the external gadget link url (DEFAULT = true)", schema = @Schema(implementation = Boolean.class)),
+            requestBody = @RequestBody(description = "The external gadget link url to add", required = true, content = @Content(schema = @Schema(implementation = String.class))))
     public Response addGadget(@QueryParam("test") Boolean testGadgetUrl, String gadgetUrl) {
         final ErrorCollection errorCollection = new ErrorCollection();
         try {

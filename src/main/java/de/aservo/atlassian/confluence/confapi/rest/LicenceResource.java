@@ -5,8 +5,14 @@ import com.atlassian.sal.api.license.LicenseHandler;
 import com.atlassian.sal.api.license.SingleProductLicenseDetailsView;
 import com.sun.jersey.spi.container.ResourceFilters;
 import de.aservo.atlassian.confluence.confapi.filter.AdminOnlyResourceFilter;
+import de.aservo.atlassian.confluence.confapi.model.ApplicationLinkBean;
 import de.aservo.atlassian.confluence.confapi.model.ErrorCollection;
 import de.aservo.atlassian.confluence.confapi.model.LicenseBean;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,6 +53,21 @@ public class LicenceResource {
      */
     @GET
     @Produces({MediaType.APPLICATION_JSON})
+    @Operation(summary = "Retrieves license information",
+            description = "Upon successful request, returns a `LicenseBean` object containing license details, e.g. \n```\n" +
+                    "{\n" +
+                    "  \"productName\": \"Confluence\",\n" +
+                    "  \"licenseType\": \"TESTING\",\n" +
+                    "  \"organization\": \"Atlassian\",\n" +
+                    "  \"description\": \"Test license for plugin developers\",\n" +
+                    "  \"expiryDate\": 1583671644086,\n" +
+                    "  \"numUsers\": 25\n" +
+                    "}" +
+                    "\n```",
+            responses = {
+                    @ApiResponse(responseCode = "![Status 200][status-200]", description = "License details", content = @Content(schema = @Schema(implementation = LicenseBean.class))),
+                    @ApiResponse(responseCode = "![Status 400][status-400]", description = "An error occured while retrieving the license infos")
+            })
     public Response getLicense() {
         final ErrorCollection errorCollection = new ErrorCollection();
         try {
@@ -70,6 +91,13 @@ public class LicenceResource {
     @POST
     @Consumes({MediaType.TEXT_PLAIN})
     @Produces({MediaType.APPLICATION_JSON})
+    @Operation(summary = "Adds a new license",
+            description = "Upon successful request, returns a `LicenseBean` object containing license details",
+            responses = {
+                    @ApiResponse(responseCode = "![Status 200][status-200]", description = "License details for the added license", content = @Content(schema = @Schema(implementation = ApplicationLinkBean.class))),
+                    @ApiResponse(responseCode = "![Status 400][status-400]", description = "An error occured while setting the new license")
+            },
+            requestBody = @RequestBody(description = "The product license string to add", required = true, content = @Content(schema = @Schema(implementation = String.class))))
     public Response addLicense(String licenseKey) {
         final ErrorCollection errorCollection = new ErrorCollection();
         try {

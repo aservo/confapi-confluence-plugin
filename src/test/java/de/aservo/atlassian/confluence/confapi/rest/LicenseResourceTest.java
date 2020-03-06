@@ -35,7 +35,7 @@ public class LicenseResourceTest {
         doReturn(view).when(licenseHandler).getProductLicenseDetails(LicenceResource.CONFLUENCE_APP_ID);
 
         final Response response = resource.getLicense();
-        assertEquals(response.getStatus(), 200);
+        assertEquals(200, response.getStatus());
         final LicenseBean licenseBean = (LicenseBean) response.getEntity();
 
         assertEquals(licenseBean, new LicenseBean(view));
@@ -48,7 +48,7 @@ public class LicenseResourceTest {
         doReturn(view).when(licenseHandler).getProductLicenseDetails(LicenceResource.CONFLUENCE_APP_ID);
 
         final Response response = resource.addLicense("ABCDEFG");
-        assertEquals(response.getStatus(), 200);
+        assertEquals(200, response.getStatus());
     }
 
     private SingleProductLicenseDetailsView createLicenseDetails() {

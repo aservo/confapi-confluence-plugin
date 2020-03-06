@@ -34,7 +34,7 @@ public class ExternalGadgetsResourceTest {
         doReturn(Collections.singletonList(url)).when(externalGadgetsService).getRegisteredExternalGadgetURls();
 
         final Response response = resource.getGadgets();
-        assertEquals(response.getStatus(), 200);
+        assertEquals(200, response.getStatus());
         @SuppressWarnings("unchecked") final List<String> gadgetUris = (List<String>) response.getEntity();
 
         assertEquals(gadgetUris.get(0), url);
@@ -45,6 +45,6 @@ public class ExternalGadgetsResourceTest {
         String url = "http://localhost";
 
         final Response response = resource.addGadget(Boolean.FALSE, url);
-        assertEquals(response.getStatus(), 200);
+        assertEquals(200, response.getStatus());
     }
 }

@@ -37,7 +37,7 @@ public class UserResourceTest {
         doReturn(bean).when(userService).getUser(bean.getUsername());
 
         final Response response = resource.getUser(bean.getUsername());
-        assertEquals(response.getStatus(), 200);
+        assertEquals(200, response.getStatus());
         final UserBean userBean = (UserBean) response.getEntity();
 
         assertEquals(userBean, bean);
@@ -51,7 +51,7 @@ public class UserResourceTest {
         doReturn(bean).when(userService).updateUser(bean);
 
         final Response response = resource.updateUser(bean);
-        assertEquals(response.getStatus(), 200);
+        assertEquals(200, response.getStatus());
         final UserBean userBean = (UserBean) response.getEntity();
 
         assertEquals(userBean, bean);
@@ -65,7 +65,7 @@ public class UserResourceTest {
         doReturn(bean).when(userService).updateUserPassword(bean.getUsername(), "newPW");
 
         final Response response = resource.updateUserPassword(bean.getUsername(), "newPW");
-        assertEquals(response.getStatus(), 200);
+        assertEquals(200, response.getStatus());
         final UserBean userBean = (UserBean) response.getEntity();
 
         assertEquals(userBean, bean);

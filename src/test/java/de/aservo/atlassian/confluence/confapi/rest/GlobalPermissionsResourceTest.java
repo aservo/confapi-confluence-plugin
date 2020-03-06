@@ -25,6 +25,6 @@ public class GlobalPermissionsResourceTest {
     @Test
     public void testSetGlobalPermissions() {
         Response response = resource.setGlobalAccessPermissions(true, true);
-        assertEquals(response.getStatus(), 200);
+        assertEquals(200, response.getStatus());
     }
 }

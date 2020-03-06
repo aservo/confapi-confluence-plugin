@@ -37,7 +37,7 @@ public class UserDirectoryResourceTest {
         doReturn(Collections.singletonList(directory)).when(crowdDirectoryService).findAllDirectories();
 
         final Response response = resource.getDirectories();
-        assertEquals(response.getStatus(), 200);
+        assertEquals(200, response.getStatus());
         @SuppressWarnings("unchecked") final List<UserDirectoryBean> userDirectoryBeans = (List<UserDirectoryBean>) response.getEntity();
 
         assertEquals(userDirectoryBeans.get(0), UserDirectoryBean.buildUserDirectoryBean(directory));
@@ -53,7 +53,7 @@ public class UserDirectoryResourceTest {
         doReturn(directory).when(crowdDirectoryService).addDirectory(directory);
 
         final Response response = resource.addDirectory(Boolean.FALSE, directoryBean);
-        assertEquals(response.getStatus(), 200);
+        assertEquals(200, response.getStatus());
         final UserDirectoryBean userDirectoryBean = (UserDirectoryBean) response.getEntity();
 
         assertEquals(userDirectoryBean.getName(), directoryBean.getName());

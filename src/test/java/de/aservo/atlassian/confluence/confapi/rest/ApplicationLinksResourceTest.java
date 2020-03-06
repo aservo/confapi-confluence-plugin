@@ -37,7 +37,7 @@ public class ApplicationLinksResourceTest {
         doReturn(linkBeans).when(applicationLinkService).getApplicationLinks();
 
         final Response response = resource.getApplicationLinks();
-        assertEquals(response.getStatus(), 200);
+        assertEquals(200, response.getStatus());
         @SuppressWarnings("unchecked") final List<ApplicationLinkBean> beans = (List<ApplicationLinkBean>) response.getEntity();
 
         assertEquals(beans.get(0), bean);
@@ -52,7 +52,7 @@ public class ApplicationLinksResourceTest {
         doReturn(linkBeans).when(applicationLinkService).getApplicationLinks();
 
         final Response response = resource.addApplicationLink(bean);
-        assertEquals(response.getStatus(), 200);
+        assertEquals(200, response.getStatus());
 
         @SuppressWarnings("unchecked") final List<ApplicationLinkBean> beans = (List<ApplicationLinkBean>) response.getEntity();
 

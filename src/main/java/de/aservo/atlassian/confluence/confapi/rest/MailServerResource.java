@@ -47,9 +47,7 @@ public class MailServerResource {
      * @param mailServerManager the injected {@link MailServerManager}
      */
     @Inject
-    public MailServerResource(
-            final MailServerManager mailServerManager) {
-
+    public MailServerResource(final MailServerManager mailServerManager) {
         this.mailServerManager = mailServerManager;
     }
 
@@ -100,9 +98,7 @@ public class MailServerResource {
                     @ApiResponse(responseCode = "![Status 400][status-400]", description = "An error occured while updating the settings")
             },
             requestBody = @RequestBody(description = "The mailserver configuration to update", required = true, content = @Content(schema = @Schema(implementation = SmtpMailServerBean.class))))
-    public Response putSmtpMailServer(
-            final SmtpMailServerBean bean) {
-
+    public Response putSmtpMailServer(final SmtpMailServerBean bean) {
         final ErrorCollection errorCollection = new ErrorCollection();
 
         final SMTPMailServer smtpMailServer = mailServerManager.isDefaultSMTPMailServerDefined()
@@ -259,5 +255,4 @@ public class MailServerResource {
 
         return Response.status(Response.Status.BAD_REQUEST).entity(errorCollection).build();
     }
-
 }

@@ -3,7 +3,6 @@ package de.aservo.atlassian.confluence.confapi.service;
 import com.atlassian.confluence.languages.LocaleManager;
 import com.atlassian.confluence.user.AuthenticatedUserThreadLocal;
 import com.atlassian.confluence.user.ConfluenceUser;
-import com.atlassian.gadgets.GadgetParsingException;
 import com.atlassian.gadgets.GadgetRequestContext;
 import com.atlassian.gadgets.directory.spi.ExternalGadgetSpec;
 import com.atlassian.gadgets.directory.spi.ExternalGadgetSpecStore;
@@ -86,12 +85,7 @@ public class ExternalGadgetsService {
             Locale locale = localeManager.getLocale(user);
             GadgetRequestContext requestContext = GadgetRequestContext.Builder.gadgetRequestContext().locale(locale)
                     .ignoreCache(false).user(new GadgetRequestContext.User(user.getKey().getStringValue(), user.getName())).build();
-            try {
-                gadgetSpecFactory.getGadgetSpec(uri, requestContext);
-            } catch (GadgetParsingException e) {
-                log.warn("Could not add gadget at {}", uri, e);
-                throw e;
-            }
+            gadgetSpecFactory.getGadgetSpec(uri, requestContext);
         }
 
         //add gadget url to store

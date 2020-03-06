@@ -56,6 +56,8 @@ public class ApplicationLinksServiceTest {
         doReturn(applicationLink).when(mutatingApplicationLinkService).createApplicationLink(null, null);
 
         applicationLinkService.addApplicationLink(applicationLinkBean);
+
+        assertEquals(applicationLinkBean.getName(), applicationLink.getName());
     }
 
     @Test(expected = ValidationException.class)

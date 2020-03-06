@@ -59,10 +59,12 @@ public class ExternalGadgetServiceTest {
     }
 
     @Test
-    public void testAddRegisteredGadgetUrisWithoutConnectionTest() throws URISyntaxException {
+    public void testAddRegisteredGadgetUrisWithoutConnectionTest() throws URISyntaxException, IllegalAccessException {
         ExternalGadgetSpec externalGadgetSpec = createExternalGadgetSpec();
 
         externalGadgetsService.addExternalGadgetUrl(externalGadgetSpec.getSpecUri().toString(), Boolean.FALSE);
+
+        testAddRegisteredGadgetUrisWithConnectionTest();
     }
 
     @Test

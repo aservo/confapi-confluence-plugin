@@ -11,13 +11,16 @@ import java.util.stream.Collectors;
  * The type Bean validation service.
  */
 public class BeanValidationService {
+
+    private BeanValidationService() {}
+
     /**
      * Validates the given bean using javax.validation impl from hibernate reference.
      *
      * @param bean the bean
      * @throws ValidationException the validation exception
      */
-    public static void validate(Object bean) throws ValidationException {
+    public static void validate(Object bean) {
         ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
         Validator validator = validatorFactory.getValidator();
         Set<ConstraintViolation<Object>> violations = validator.validate(bean);

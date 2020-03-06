@@ -1,10 +1,18 @@
 package de.aservo.atlassian.confluence.confapi.model;
 
 import com.atlassian.applinks.api.ApplicationLink;
+import com.atlassian.applinks.api.ApplicationType;
+import com.atlassian.applinks.api.application.bamboo.BambooApplicationType;
+import com.atlassian.applinks.api.application.bitbucket.BitbucketApplicationType;
+import com.atlassian.applinks.api.application.confluence.ConfluenceApplicationType;
+import com.atlassian.applinks.api.application.crowd.CrowdApplicationType;
+import com.atlassian.applinks.api.application.fecru.FishEyeCrucibleApplicationType;
+import com.atlassian.applinks.api.application.jira.JiraApplicationType;
 import com.atlassian.applinks.spi.link.ApplicationLinkDetails;
 import de.aservo.atlassian.confluence.confapi.service.ApplicationLinkTypes;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.NotImplementedException;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -71,6 +79,31 @@ public class ApplicationLinkBean {
         displayUrl = linkDetails.getDisplayUrl().toString();
         rpcUrl = linkDetails.getRpcUrl().toString();
         primary = linkDetails.isPrimary();
+        linkType = getLinktypeFromAppType(linkDetails.getType());
+    }
+
+    /**
+     * Gets the linktype ApplicationLinkTypes enum value.
+     *
+     * @param type the ApplicationType
+     * @return the linktype
+     */
+    private ApplicationLinkTypes getLinktypeFromAppType(ApplicationType type) {
+        if (type instanceof BambooApplicationType) {
+            return ApplicationLinkTypes.BAMBOO;
+        } else if (type instanceof JiraApplicationType) {
+            return ApplicationLinkTypes.JIRA;
+        } else if (type instanceof BitbucketApplicationType) {
+            return ApplicationLinkTypes.BITBUCKET;
+        } else if (type instanceof ConfluenceApplicationType) {
+            return ApplicationLinkTypes.CONFLUENCE;
+        } else if (type instanceof FishEyeCrucibleApplicationType) {
+            return ApplicationLinkTypes.FISHEYE;
+        } else if (type instanceof CrowdApplicationType) {
+            return ApplicationLinkTypes.CROWD;
+        } else {
+            throw new NotImplementedException("application type '" + type.getClass() + "' not implemented");
+        }
     }
 
     /**

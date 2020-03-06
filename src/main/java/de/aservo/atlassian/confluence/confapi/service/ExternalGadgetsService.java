@@ -11,6 +11,7 @@ import com.atlassian.gadgets.spec.GadgetSpecFactory;
 import com.atlassian.plugin.spring.scanner.annotation.component.ConfluenceComponent;
 import com.atlassian.plugin.spring.scanner.annotation.export.ExportAsService;
 import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
+import org.apache.commons.lang.NullArgumentException;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,7 +74,9 @@ public class ExternalGadgetsService {
     public void addExternalGadgetUrl(String url, Boolean testGadgetUrl) throws URISyntaxException {
 
         //initial checks
-        assert url != null && StringUtils.isNotBlank(url.trim());
+        if (url == null || StringUtils.isBlank(url.trim())) {
+            throw new NullArgumentException("'url' must not be null or empty!");
+        }
         String gadgetUrlToAdd = url.trim();
         URI uri = new URI(gadgetUrlToAdd);
 

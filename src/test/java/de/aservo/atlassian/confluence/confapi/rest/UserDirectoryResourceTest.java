@@ -48,6 +48,7 @@ public class UserDirectoryResourceTest {
         Directory directory = createDirectory();
         UserDirectoryBean directoryBean = UserDirectoryBean.buildUserDirectoryBean(directory);
         directoryBean.setCrowdUrl("http://localhost");
+        directoryBean.setClientName("confluence-client");
         directoryBean.setAppPassword("test");
 
         doReturn(directory).when(crowdDirectoryService).addDirectory(directory);

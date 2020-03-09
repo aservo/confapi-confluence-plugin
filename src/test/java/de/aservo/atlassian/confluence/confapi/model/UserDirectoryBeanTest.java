@@ -8,8 +8,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserDirectoryBeanTest {
@@ -22,6 +21,10 @@ public class UserDirectoryBeanTest {
         bean.setImplClass("test.class");
         bean.setCrowdUrl("http://localhost");
         bean.setAppPassword("test");
+        bean.setProxyHost("http://localhost/proxy");
+        bean.setProxyPort("8080");
+        bean.setProxyUsername("user");
+        bean.setProxyPassword("pass");
 
         DirectoryImpl directory = bean.buildDirectoryImpl();
 
@@ -32,6 +35,10 @@ public class UserDirectoryBeanTest {
         Map<String, String> attributes = directory.getAttributes();
         assertEquals(attributes.get(UserDirectoryBean.ATTR_CROWD_URL), bean.getCrowdUrl());
         assertEquals(attributes.get(UserDirectoryBean.ATTR_CROWD_PASSWORD), bean.getAppPassword());
+        assertEquals(attributes.get(UserDirectoryBean.ATTR_CROWD_PROXY_HOST), bean.getProxyHost());
+        assertEquals(attributes.get(UserDirectoryBean.ATTR_CROWD_PROXY_PORT), bean.getProxyPort());
+        assertEquals(attributes.get(UserDirectoryBean.ATTR_CROWD_PROXY_USERNAME), bean.getProxyUsername());
+        assertEquals(attributes.get(UserDirectoryBean.ATTR_CROWD_PROXY_PASSWORD), bean.getProxyPassword());
     }
 
     @Test
@@ -39,6 +46,11 @@ public class UserDirectoryBeanTest {
         DirectoryImpl directory = new DirectoryImpl("test", DirectoryType.CROWD, "test.class");
         directory.setAttribute(UserDirectoryBean.ATTR_CROWD_URL, "http://localhost");
         directory.setAttribute(UserDirectoryBean.ATTR_CROWD_PASSWORD, "test");
+        directory.setAttribute(UserDirectoryBean.ATTR_CROWD_CLIENT_NAME, "confluence-client");
+        directory.setAttribute(UserDirectoryBean.ATTR_CROWD_PROXY_HOST, "http://localhost/proxy");
+        directory.setAttribute(UserDirectoryBean.ATTR_CROWD_PROXY_PORT, "8080");
+        directory.setAttribute(UserDirectoryBean.ATTR_CROWD_PROXY_USERNAME, "user");
+        directory.setAttribute(UserDirectoryBean.ATTR_CROWD_PROXY_PASSWORD, "pass");
 
         UserDirectoryBean directoryBean = UserDirectoryBean.buildUserDirectoryBean(directory);
 
@@ -48,6 +60,11 @@ public class UserDirectoryBeanTest {
         assertEquals(directory.getImplementationClass(), directoryBean.getImplClass());
         Map<String, String> attributes = directory.getAttributes();
         assertEquals(attributes.get(UserDirectoryBean.ATTR_CROWD_URL), directoryBean.getCrowdUrl());
-        assertEquals(null, directoryBean.getAppPassword());
+        assertEquals(attributes.get(UserDirectoryBean.ATTR_CROWD_CLIENT_NAME), directoryBean.getClientName());
+        assertNull(directoryBean.getAppPassword());
+        assertEquals(attributes.get(UserDirectoryBean.ATTR_CROWD_PROXY_HOST), directoryBean.getProxyHost());
+        assertEquals(attributes.get(UserDirectoryBean.ATTR_CROWD_PROXY_PORT), directoryBean.getProxyPort());
+        assertEquals(attributes.get(UserDirectoryBean.ATTR_CROWD_PROXY_USERNAME), directoryBean.getProxyUsername());
+        assertNull(directoryBean.getProxyPassword());
     }
 }

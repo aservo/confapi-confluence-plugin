@@ -28,6 +28,42 @@ public class UserDirectoryBean {
      * The constant ATTR_CROWD_PASSWORD.
      */
     public static final String ATTR_CROWD_PASSWORD = "application.password";
+    /**
+     * The constant ATTR_CROWD_CLIENT_NAME.
+     */
+    public static final String ATTR_CROWD_CLIENT_NAME = "application.name";
+    /**
+     * The constant ATTR_CROWD_SYNC_INTERVAL.
+     */
+    public static final String ATTR_CROWD_SYNC_INTERVAL = "directory.cache.synchronise.interval";
+    /**
+     * The constant ATTR_CROWD_NESTED_GROUPS.
+     */
+    public static final String ATTR_CROWD_NESTED_GROUPS = "useNestedGroups";
+    /**
+     * The constant ATTR_CROWD_INCREMENTAL_SYNC.
+     */
+    public static final String ATTR_CROWD_INCREMENTAL_SYNC = "crowd.sync.incremental.enabled";
+    /**
+     * The constant ATTR_CROWD_GROUP_MEMBERSHIP_SYNC.
+     */
+    public static final String ATTR_CROWD_GROUP_MEMBERSHIP_SYNC = "crowd.sync.group.membership.after.successful.user.auth.enabled";
+    /**
+     * The constant ATTR_CROWD_PROXY_HOST.
+     */
+    public static final String ATTR_CROWD_PROXY_HOST = "crowd.server.http.proxy.host";
+    /**
+     * The constant ATTR_CROWD_PROXY_PORT.
+     */
+    public static final String ATTR_CROWD_PROXY_PORT = "crowd.server.http.proxy.port";
+    /**
+     * The constant ATTR_CROWD_PROXY_USERNAME.
+     */
+    public static final String ATTR_CROWD_PROXY_USERNAME = "crowd.server.http.proxy.username";
+    /**
+     * The constant ATTR_CROWD_PROXY_PASSWORD.
+     */
+    public static final String ATTR_CROWD_PROXY_PASSWORD = "crowd.server.http.proxy.password";
 
     @XmlElement
     private boolean active;
@@ -36,6 +72,11 @@ public class UserDirectoryBean {
     @NotNull
     @Size(min = 1)
     private String name;
+
+    @XmlElement
+    @NotNull
+    @Size(min = 1)
+    private String clientName;
 
     @XmlElement
     @NotNull
@@ -59,6 +100,18 @@ public class UserDirectoryBean {
     @Size(min = 1)
     private String implClass;
 
+    @XmlElement
+    private String proxyHost;
+
+    @XmlElement
+    private String proxyPort;
+
+    @XmlElement
+    private String proxyUsername;
+
+    @XmlElement
+    private String proxyPassword;
+
     /**
      * Build directory directory.
      *
@@ -73,6 +126,15 @@ public class UserDirectoryBean {
         directory.setImplementationClass(implClass);
         directory.setAttribute(ATTR_CROWD_URL, crowdUrl);
         directory.setAttribute(ATTR_CROWD_PASSWORD, appPassword);
+        directory.setAttribute(ATTR_CROWD_CLIENT_NAME, clientName);
+        directory.setAttribute(ATTR_CROWD_PROXY_HOST, proxyHost);
+        directory.setAttribute(ATTR_CROWD_PROXY_PORT, proxyPort);
+        directory.setAttribute(ATTR_CROWD_PROXY_USERNAME, proxyUsername);
+        directory.setAttribute(ATTR_CROWD_PROXY_PASSWORD, proxyPassword);
+        directory.setAttribute(ATTR_CROWD_SYNC_INTERVAL, "3600");
+        directory.setAttribute(ATTR_CROWD_NESTED_GROUPS, "false");
+        directory.setAttribute(ATTR_CROWD_INCREMENTAL_SYNC, "true");
+        directory.setAttribute(ATTR_CROWD_GROUP_MEMBERSHIP_SYNC, "only_when_first_created");
         return directory;
     }
 
@@ -90,6 +152,10 @@ public class UserDirectoryBean {
         directoryBean.setType(dir.getType());
         directoryBean.setDescription(dir.getDescription());
         directoryBean.setCrowdUrl(attributes.get(ATTR_CROWD_URL));
+        directoryBean.setClientName(attributes.get(ATTR_CROWD_CLIENT_NAME));
+        directoryBean.setProxyHost(attributes.get(ATTR_CROWD_PROXY_HOST));
+        directoryBean.setProxyPort(attributes.get(ATTR_CROWD_PROXY_PORT));
+        directoryBean.setProxyUsername(attributes.get(ATTR_CROWD_PROXY_USERNAME));
         directoryBean.setImplClass(dir.getImplementationClass());
         return directoryBean;
     }

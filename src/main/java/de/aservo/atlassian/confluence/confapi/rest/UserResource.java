@@ -108,7 +108,6 @@ public class UserResource {
      */
     @PUT
     @Path("/password")
-    @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     @Operation(summary = "Updates the user password",
             description = "Upon successful request, returns the updated `UserBean` object.",

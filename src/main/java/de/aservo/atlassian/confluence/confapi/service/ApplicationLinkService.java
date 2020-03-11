@@ -17,6 +17,8 @@ import com.atlassian.plugin.spring.scanner.annotation.component.ConfluenceCompon
 import com.atlassian.plugin.spring.scanner.annotation.export.ExportAsService;
 import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
 import de.aservo.atlassian.confluence.confapi.model.ApplicationLinkBean;
+import de.aservo.atlassian.confluence.confapi.model.ApplicationLinkTypes;
+import de.aservo.atlassian.confluence.confapi.model.DefaultAuthenticationScenario;
 import org.apache.commons.lang3.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,20 +64,35 @@ public class ApplicationLinkService {
     }
 
     /**
-     * Add application link.
+     * Adds a new application link. NOTE: existing application links with the same type, e.g. "JIRA" will be
+     * removed before adding the new configuration.
      *
      * @param linkBean the link bean
+     * @return the added application ,link
      * @throws URISyntaxException                   the uri syntax exception
      * @throws ManifestNotFoundException            the manifest not found exception
      * @throws AuthenticationConfigurationException the authentication configuration exception
      */
-    public void addApplicationLink(ApplicationLinkBean linkBean) throws URISyntaxException, ManifestNotFoundException, AuthenticationConfigurationException {
+    public ApplicationLink addApplicationLink(ApplicationLinkBean linkBean) throws URISyntaxException, ManifestNotFoundException, AuthenticationConfigurationException {
+        //preparations
         BeanValidationService.validate(linkBean);
         ApplicationLinkDetails linkDetails = linkBean.toApplicationLinkDetails();
         ApplicationType applicationType = buildApplicationType(linkBean.getLinkType());
+
+        //check if there is already an application link of supplied type and if yes, remove it
+        Class<? extends ApplicationType> appType = applicationType != null ? applicationType.getClass() : null;
+        ApplicationLink primaryApplicationLink = applicationLinkService.getPrimaryApplicationLink(appType);
+        if (primaryApplicationLink != null) {
+            log.info("An existing application link configuration '{}' was found and is removed now before adding the new configuration", primaryApplicationLink.getName());
+            applicationLinkService.deleteApplicationLink(primaryApplicationLink);
+        }
+
+        //add new application link
         ApplicationLink applicationLink = applicationLinkService.createApplicationLink(applicationType, linkDetails);
         applicationLinkService.configureAuthenticationForApplicationLink(applicationLink,
                 new DefaultAuthenticationScenario(), linkBean.getUsername(), linkBean.getPassword());
+
+        return applicationLink;
     }
 
     private ApplicationType buildApplicationType(ApplicationLinkTypes linkType) {

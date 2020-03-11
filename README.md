@@ -77,7 +77,8 @@ Upon successful request, returns a list of `String` containing all configured ga
 
 | Code | Description |
 | ---- | ----------- |
-| ![Status 200][status-200] | List of configured gadget links |
+| ![Status 200][status-200] | Gadget successfully added. Returns the list of configured gadget links |
+| ![Status 204][status-204] | Provided gadget link was null or empty. Operation is skipped |
 | ![Status 400][status-400] | An error occured while retrieving the gadget links |
 
 #### POST
@@ -350,7 +351,7 @@ Upon successful request, returns a list of `UserDirectoryBean` object containing
 | Code | Description |
 | ---- | ----------- |
 | ![Status 200][status-200] | user directory details list |
-| ![Status 400][status-400] | An error occured while retrieving the user directory list |
+| ![Status 400][status-400] | An error occurred while retrieving the user directory list |
 
 #### POST
 ##### Summary:
@@ -359,7 +360,7 @@ Adds a new user directory
 
 ##### Description:
 
-Upon successful request, returns the added `UserDirectoryBean` object
+Upon successful request, returns the added `UserDirectoryBean` object, Any existing configurations with the same 'name' property are removed before adding the new configuration
 
 ##### Parameters
 

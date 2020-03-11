@@ -1,4 +1,4 @@
-package de.aservo.atlassian.confluence.confapi.service;
+package de.aservo.atlassian.confluence.confapi.model;
 
 import com.atlassian.applinks.spi.auth.AuthenticationScenario;
 

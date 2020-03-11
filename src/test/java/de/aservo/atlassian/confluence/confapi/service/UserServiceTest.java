@@ -41,6 +41,7 @@ public class UserServiceTest {
     public void testUpdateUser() throws EntityException, UserNotFoundException, IllegalAccessException {
         User user = createUser();
         UserBean userBeanUpdate = new UserBean((ConfluenceUserImpl) user);
+
         doReturn(user).when(userManager).getUser(user.getName());
 
         UserBean userBean = userService.updateUser(userBeanUpdate);

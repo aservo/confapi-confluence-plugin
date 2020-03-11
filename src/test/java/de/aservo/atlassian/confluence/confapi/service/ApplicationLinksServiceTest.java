@@ -9,6 +9,7 @@ import com.atlassian.applinks.spi.util.TypeAccessor;
 import com.atlassian.confluence.settings.setup.DefaultApplicationLink;
 import com.atlassian.confluence.settings.setup.DefaultApplicationType;
 import de.aservo.atlassian.confluence.confapi.model.ApplicationLinkBean;
+import de.aservo.atlassian.confluence.confapi.model.ApplicationLinkTypes;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -53,6 +54,7 @@ public class ApplicationLinksServiceTest {
         ApplicationLink applicationLink = createApplicationLink();
         ApplicationLinkBean applicationLinkBean = createApplicationLinkBean();
 
+        doReturn(applicationLink).when(mutatingApplicationLinkService).getPrimaryApplicationLink(null);
         doReturn(applicationLink).when(mutatingApplicationLinkService).createApplicationLink(null, null);
 
         applicationLinkService.addApplicationLink(applicationLinkBean);

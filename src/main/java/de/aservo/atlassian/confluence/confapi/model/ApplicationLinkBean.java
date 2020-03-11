@@ -9,7 +9,6 @@ import com.atlassian.applinks.api.application.crowd.CrowdApplicationType;
 import com.atlassian.applinks.api.application.fecru.FishEyeCrucibleApplicationType;
 import com.atlassian.applinks.api.application.jira.JiraApplicationType;
 import com.atlassian.applinks.spi.link.ApplicationLinkDetails;
-import de.aservo.atlassian.confluence.confapi.service.ApplicationLinkTypes;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.NotImplementedException;

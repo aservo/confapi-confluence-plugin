@@ -81,6 +81,7 @@ public class ExternalGadgetsService {
 
         //validate gadget url
         if (testGadgetUrl == null || testGadgetUrl) {
+            log.debug("testing external gadget link url for validity: {}", url);
             ConfluenceUser user = AuthenticatedUserThreadLocal.get();
             Locale locale = localeManager.getLocale(user);
             GadgetRequestContext requestContext = GadgetRequestContext.Builder.gadgetRequestContext().locale(locale)

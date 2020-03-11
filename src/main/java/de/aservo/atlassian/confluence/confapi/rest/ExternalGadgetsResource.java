@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import org.apache.commons.lang.NullArgumentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,6 +19,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
+import static javax.ws.rs.core.Response.Status.NO_CONTENT;
 
 /**
  * The type External gadgets resource.
@@ -50,13 +52,16 @@ public class ExternalGadgetsResource {
     @Operation(summary = "Retrieves currently configured external gadgets",
             description = "Upon successful request, returns a list of `String` containing all configured gadget configuration urls",
             responses = {
-                    @ApiResponse(responseCode = "![Status 200][status-200]", description = "List of configured gadget links", content = @Content(schema = @Schema(implementation = String.class))),
+                    @ApiResponse(responseCode = "![Status 200][status-200]", description = "Gadget successfully added. Returns the list of configured gadget links", content = @Content(schema = @Schema(implementation = String.class))),
+                    @ApiResponse(responseCode = "![Status 204][status-204]", description = "Provided gadget link was null or empty. Operation is skipped"),
                     @ApiResponse(responseCode = "![Status 400][status-400]", description = "An error occured while retrieving the gadget links")
             })
     public Response getGadgets() {
         final ErrorCollection errorCollection = new ErrorCollection();
         try {
             return Response.ok(externalGadgetsService.getRegisteredExternalGadgetURls()).build();
+        } catch (NullArgumentException nae) {
+            return Response.status(NO_CONTENT).build();
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             errorCollection.addErrorMessage(e.getMessage());

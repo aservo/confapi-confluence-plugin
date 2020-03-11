@@ -5,6 +5,7 @@ import de.aservo.atlassian.confluence.confapi.model.*;
 import de.aservo.atlassian.confluence.confapi.rest.*;
 import de.aservo.atlassian.confluence.confapi.service.ApplicationLinksServiceTest;
 import de.aservo.atlassian.confluence.confapi.service.ExternalGadgetServiceTest;
+import de.aservo.atlassian.confluence.confapi.service.UserDirectoryServiceTest;
 import de.aservo.atlassian.confluence.confapi.service.UserServiceTest;
 import de.aservo.atlassian.confluence.confapi.util.MailProtocolUtilTest;
 import org.junit.runner.RunWith;
@@ -33,6 +34,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
         ApplicationLinksServiceTest.class,
         ExternalGadgetServiceTest.class,
+        UserDirectoryServiceTest.class,
         UserServiceTest.class,
 
         AdminOnlyResourceFilterTest.class,

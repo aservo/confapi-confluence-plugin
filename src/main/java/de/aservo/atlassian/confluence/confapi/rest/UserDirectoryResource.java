@@ -1,15 +1,11 @@
 package de.aservo.atlassian.confluence.confapi.rest;
 
-import com.atlassian.crowd.embedded.api.CrowdDirectoryService;
-import com.atlassian.crowd.embedded.api.Directory;
-import com.atlassian.crowd.model.directory.DirectoryImpl;
-import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
 import com.sun.jersey.spi.container.ResourceFilters;
 import de.aservo.atlassian.confluence.confapi.filter.AdminOnlyResourceFilter;
 import de.aservo.atlassian.confluence.confapi.model.ApplicationLinkBean;
 import de.aservo.atlassian.confluence.confapi.model.ErrorCollection;
 import de.aservo.atlassian.confluence.confapi.model.UserDirectoryBean;
-import de.aservo.atlassian.confluence.confapi.service.BeanValidationService;
+import de.aservo.atlassian.confluence.confapi.service.UserDirectoryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -23,9 +19,9 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 
 /**
  * The type User directory resource.
@@ -37,15 +33,15 @@ public class UserDirectoryResource {
 
     private static final Logger log = LoggerFactory.getLogger(UserDirectoryResource.class);
 
-    private final CrowdDirectoryService crowdDirectoryService;
+    private final UserDirectoryService directoryService;
 
     /**
      * Instantiates a new User directory resource.
      *
-     * @param crowdDirectoryService the crowd directory service
+     * @param directoryService the crowd directory service
      */
-    public UserDirectoryResource(@ComponentImport CrowdDirectoryService crowdDirectoryService) {
-        this.crowdDirectoryService = checkNotNull(crowdDirectoryService);
+    public UserDirectoryResource(UserDirectoryService directoryService) {
+        this.directoryService = checkNotNull(directoryService);
     }
 
     /**
@@ -69,18 +65,18 @@ public class UserDirectoryResource {
                     "\n```",
             responses = {
                     @ApiResponse(responseCode = "![Status 200][status-200]", description = "user directory details list", content = @Content(schema = @Schema(implementation = UserDirectoryBean.class))),
-                    @ApiResponse(responseCode = "![Status 400][status-400]", description = "An error occured while retrieving the user directory list")
+                    @ApiResponse(responseCode = "![Status 400][status-400]", description = "An error occurred while retrieving the user directory list")
             })
     public Response getDirectories() {
         final ErrorCollection errorCollection = new ErrorCollection();
         try {
-            List<UserDirectoryBean> directories = crowdDirectoryService.findAllDirectories().stream().map(UserDirectoryBean::buildUserDirectoryBean).collect(Collectors.toList());
+            List<UserDirectoryBean> directories = directoryService.getDirectories();
             return Response.ok(directories).build();
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             errorCollection.addErrorMessage(e.getMessage());
         }
-        return Response.status(Response.Status.BAD_REQUEST).entity(errorCollection).build();
+        return Response.status(BAD_REQUEST).entity(errorCollection).build();
     }
 
     /**
@@ -94,7 +90,7 @@ public class UserDirectoryResource {
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     @Operation(summary = "Adds a new user directory",
-            description = "Upon successful request, returns the added `UserDirectoryBean` object",
+            description = "Upon successful request, returns the added `UserDirectoryBean` object, Any existing configurations with the same 'name' property are removed before adding the new configuration",
             responses = {
                     @ApiResponse(responseCode = "![Status 200][status-200]", description = "user directory added", content = @Content(schema = @Schema(implementation = ApplicationLinkBean.class))),
                     @ApiResponse(responseCode = "![Status 400][status-400]", description = "An error occured while setting adding the new user directory")
@@ -104,17 +100,13 @@ public class UserDirectoryResource {
     public Response addDirectory(@QueryParam("test") Boolean testConnection, UserDirectoryBean directory) {
         final ErrorCollection errorCollection = new ErrorCollection();
         try {
-            BeanValidationService.validate(directory);
-            DirectoryImpl atlDir = directory.buildDirectoryImpl();
-            if (testConnection == null || testConnection) {
-                crowdDirectoryService.testConnection(atlDir);
-            }
-            Directory dir = crowdDirectoryService.addDirectory(atlDir);
-            return Response.ok(UserDirectoryBean.buildUserDirectoryBean(dir)).build();
+            boolean test = testConnection == null ? true : testConnection;
+            UserDirectoryBean addDirectory = directoryService.addDirectory(directory, test);
+            return Response.ok(addDirectory).build();
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             errorCollection.addErrorMessage(e.getMessage());
         }
-        return Response.status(Response.Status.BAD_REQUEST).entity(errorCollection).build();
+        return Response.status(BAD_REQUEST).entity(errorCollection).build();
     }
 }

@@ -70,7 +70,7 @@ public class UserService {
                 //email field can only be modified through reflection because it is private
                 FieldUtils.writeDeclaredField(confluenceUser, "email", user.getEmail(), true);
                 userManager.saveUser(confluenceUser);
-            } catch (IllegalAccessException e) {
+            } catch (Exception e) {
                 //field "email" is only available from v6.15.10, for backwards compatibility try with backingUser
                 log.debug("didi not find field 'email' in class ConfluenceUserImpl, trying with field 'emailAddress' of backingUser...");
                 User backingUser = confluenceUser.getBackingUser();

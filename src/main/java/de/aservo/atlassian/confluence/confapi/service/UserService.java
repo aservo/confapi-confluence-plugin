@@ -9,6 +9,7 @@ import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
 import com.atlassian.user.EntityException;
 import com.atlassian.user.User;
 import com.atlassian.user.UserManager;
+import de.aservo.atlassian.confapi.service.BeanValidationService;
 import de.aservo.atlassian.confluence.confapi.model.UserBean;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.reflect.FieldUtils;

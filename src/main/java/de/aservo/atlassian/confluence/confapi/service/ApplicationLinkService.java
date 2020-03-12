@@ -16,6 +16,7 @@ import com.atlassian.applinks.spi.util.TypeAccessor;
 import com.atlassian.plugin.spring.scanner.annotation.component.ConfluenceComponent;
 import com.atlassian.plugin.spring.scanner.annotation.export.ExportAsService;
 import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
+import de.aservo.atlassian.confapi.service.BeanValidationService;
 import de.aservo.atlassian.confluence.confapi.model.ApplicationLinkBean;
 import de.aservo.atlassian.confluence.confapi.model.ApplicationLinkTypes;
 import de.aservo.atlassian.confluence.confapi.model.DefaultAuthenticationScenario;

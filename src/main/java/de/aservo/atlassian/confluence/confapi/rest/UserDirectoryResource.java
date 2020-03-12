@@ -1,11 +1,10 @@
 package de.aservo.atlassian.confluence.confapi.rest;
 
 import com.sun.jersey.spi.container.ResourceFilters;
+import de.aservo.atlassian.confapi.model.UserDirectoryBean;
+import de.aservo.atlassian.confapi.service.UserDirectoryService;
 import de.aservo.atlassian.confluence.confapi.filter.AdminOnlyResourceFilter;
-import de.aservo.atlassian.confluence.confapi.model.ApplicationLinkBean;
 import de.aservo.atlassian.confluence.confapi.model.ErrorCollection;
-import de.aservo.atlassian.confluence.confapi.model.UserDirectoryBean;
-import de.aservo.atlassian.confluence.confapi.service.UserDirectoryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -92,7 +91,7 @@ public class UserDirectoryResource {
     @Operation(summary = "Adds a new user directory",
             description = "Upon successful request, returns the added `UserDirectoryBean` object, Any existing configurations with the same 'name' property are removed before adding the new configuration",
             responses = {
-                    @ApiResponse(responseCode = "![Status 200][status-200]", description = "user directory added", content = @Content(schema = @Schema(implementation = ApplicationLinkBean.class))),
+                    @ApiResponse(responseCode = "![Status 200][status-200]", description = "user directory added", content = @Content(schema = @Schema(implementation = UserDirectoryBean.class))),
                     @ApiResponse(responseCode = "![Status 400][status-400]", description = "An error occured while setting adding the new user directory")
             },
             parameters = @Parameter(description = "Whether or not to test the connection to the user directory service, e.g. CROWD (DEFAULT = true)", schema = @Schema(implementation = Boolean.class)),

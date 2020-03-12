@@ -14,7 +14,7 @@
 
     <groupId>de.aservo.atlassian</groupId>
     <artifactId>confluence-confapi-plugin</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.2-SNAPSHOT</version>
     <packaging>atlassian-plugin</packaging>
 
     <name>ConfAPI for Confluence</name>
@@ -46,6 +46,12 @@
             <organization>ASERVO Software GmbH</organization>
             <organizationUrl>https://www.aservo.com</organizationUrl>
         </developer>
+        <developer>
+            <name>Kai Lehmann</name>
+            <email>klehmann@aservo.com</email>
+            <organization>ASERVO Software GmbH</organization>
+            <organizationUrl>https://www.aservo.com</organizationUrl>
+        </developer>
     </developers>
 
     <properties>
@@ -60,6 +66,12 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>de.aservo.atlassian</groupId>
+            <artifactId>confapi-commons</artifactId>
+            <version>0.0.2-SNAPSHOT</version>
+        </dependency>
+
         <dependency>
             <groupId>com.atlassian.confluence</groupId>
             <artifactId>confluence</artifactId>

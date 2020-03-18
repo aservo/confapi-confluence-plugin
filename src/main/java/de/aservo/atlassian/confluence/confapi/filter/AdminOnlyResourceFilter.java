@@ -13,11 +13,18 @@ import com.sun.jersey.spi.container.ResourceFilter;
 
 import javax.ws.rs.ext.Provider;
 
+/**
+ * The Admin only resource filter.
+ */
 @Provider
-public class AdminOnlyResourceFilter implements ResourceFilter, ContainerRequestFilter
-{
+public class AdminOnlyResourceFilter implements ResourceFilter, ContainerRequestFilter {
     private final PermissionManager permissionManager;
 
+    /**
+     * Instantiates a new Admin only resource filter.
+     *
+     * @param permissionManager the permission manager
+     */
     public AdminOnlyResourceFilter(@ComponentImport PermissionManager permissionManager) {
         this.permissionManager = permissionManager;
     }

@@ -172,52 +172,6 @@ Upon successful request, returns a `LicenseBean` object containing license detai
 | ![Status 200][status-200] | License details for the added license |
 | ![Status 400][status-400] | An error occured while setting the new license |
 
-### /mail/pop
-
-#### GET
-##### Summary:
-
-Retrieves the current POP mailserver configuration
-
-##### Description:
-
-Returns a `PopMailServerBean` object with the configuration of the POP mail server, if any server is defined.., e.g. 
-```
-{
-    "name": "Localhost",
-    "description": "The localhost SMTP server",
-    "protocol": "pop",
-    "host": "localhost",
-    "port": 110,
-    "timeout": 10000,
-    "username": "admin",
-    "password": "admin"
-}
-```
-
-##### Responses
-
-| Code | Description |
-| ---- | ----------- |
-| ![Status 200][status-200] | pop mailserver configuration |
-| ![Status 400][status-400] | An error occured while retrieving the settings |
-
-#### PUT
-##### Summary:
-
-Updates the POP mailserver configuration
-
-##### Description:
-
-Upon successful request, returns a `PopMailServerBean` object containing the updates settings
-
-##### Responses
-
-| Code | Description |
-| ---- | ----------- |
-| ![Status 200][status-200] | updated settings object |
-| ![Status 400][status-400] | An error occured while updating the settings |
-
 ### /mail/smtp
 
 #### GET
@@ -259,6 +213,52 @@ Updates the SMTP mailserver configuration
 ##### Description:
 
 Upon successful request, returns a `SmtpMailServerBean` object containing the updates settings
+
+##### Responses
+
+| Code | Description |
+| ---- | ----------- |
+| ![Status 200][status-200] | updated settings object |
+| ![Status 400][status-400] | An error occured while updating the settings |
+
+### /mail/pop
+
+#### GET
+##### Summary:
+
+Retrieves the current POP mailserver configuration
+
+##### Description:
+
+Returns a `PopMailServerBean` object with the configuration of the POP mail server, if any server is defined.., e.g. 
+```
+{
+    "name": "Localhost",
+    "description": "The localhost SMTP server",
+    "protocol": "pop",
+    "host": "localhost",
+    "port": 110,
+    "timeout": 10000,
+    "username": "admin",
+    "password": "admin"
+}
+```
+
+##### Responses
+
+| Code | Description |
+| ---- | ----------- |
+| ![Status 200][status-200] | pop mailserver configuration |
+| ![Status 400][status-400] | An error occured while retrieving the settings |
+
+#### PUT
+##### Summary:
+
+Updates the POP mailserver configuration
+
+##### Description:
+
+Upon successful request, returns a `PopMailServerBean` object containing the updates settings
 
 ##### Responses
 
@@ -375,6 +375,31 @@ Upon successful request, returns the added `UserDirectoryBean` object, Any exist
 | ![Status 200][status-200] | user directory added |
 | ![Status 400][status-400] | An error occured while setting adding the new user directory |
 
+### /users/password
+
+#### PUT
+##### Summary:
+
+Updates the user password
+
+##### Description:
+
+Upon successful request, returns the updated `UserBean` object.
+
+##### Parameters
+
+| Name | Located in | Description | Required | Schema |
+| ---- | ---------- | ----------- | -------- | ---- |
+| username | query |  | No | string |
+| password | query |  | No | string |
+
+##### Responses
+
+| Code | Description |
+| ---- | ----------- |
+| ![Status 200][status-200] | updated user details |
+| ![Status 400][status-400] | An error occured while updating the user password |
+
 ### /users
 
 #### GET
@@ -421,28 +446,3 @@ Upon successful request, returns the updated `UserBean` object. NOTE: Currently 
 | ---- | ----------- |
 | ![Status 200][status-200] | updated user details |
 | ![Status 400][status-400] | An error occured while updating the user |
-
-### /users/password
-
-#### PUT
-##### Summary:
-
-Updates the user password
-
-##### Description:
-
-Upon successful request, returns the updated `UserBean` object.
-
-##### Parameters
-
-| Name | Located in | Description | Required | Schema |
-| ---- | ---------- | ----------- | -------- | ---- |
-| username | query |  | No | string |
-| password | query |  | No | string |
-
-##### Responses
-
-| Code | Description |
-| ---- | ----------- |
-| ![Status 200][status-200] | updated user details |
-| ![Status 400][status-400] | An error occured while updating the user password |

@@ -57,13 +57,9 @@ public class ApplicationLinkBean {
     private boolean primary;
 
     @XmlElement
-    @NotNull
-    @Size(min = 1)
     private String username;
 
     @XmlElement
-    @NotNull
-    @Size(min = 1)
     private String password;
 
     /**

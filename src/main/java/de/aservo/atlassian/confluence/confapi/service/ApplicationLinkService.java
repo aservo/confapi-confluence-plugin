@@ -39,18 +39,18 @@ public class ApplicationLinkService {
 
     private static final Logger log = LoggerFactory.getLogger(ApplicationLinkService.class);
 
-    private final MutatingApplicationLinkService applicationLinkService;
+    private final MutatingApplicationLinkService mutatingApplicationLinkService;
     private final TypeAccessor typeAccessor;
 
     /**
      * Instantiates a new Application link service.
      *
-     * @param applicationLinkService the application link service
+     * @param mutatingApplicationLinkService the application link service
      * @param typeAccessor           the type accessor
      */
-    public ApplicationLinkService(@ComponentImport MutatingApplicationLinkService applicationLinkService,
+    public ApplicationLinkService(@ComponentImport MutatingApplicationLinkService mutatingApplicationLinkService,
                                   @ComponentImport TypeAccessor typeAccessor) {
-        this.applicationLinkService = applicationLinkService;
+        this.mutatingApplicationLinkService = mutatingApplicationLinkService;
         this.typeAccessor = typeAccessor;
     }
 
@@ -60,7 +60,7 @@ public class ApplicationLinkService {
      * @return the application links
      */
     public List<ApplicationLinkBean> getApplicationLinks() {
-        Iterable<ApplicationLink> applicationLinksIterable = applicationLinkService.getApplicationLinks();
+        Iterable<ApplicationLink> applicationLinksIterable = mutatingApplicationLinkService.getApplicationLinks();
         return StreamSupport.stream(applicationLinksIterable.spliterator(), false)
                 .map(ApplicationLinkBean::new).collect(Collectors.toList());
     }
@@ -83,15 +83,15 @@ public class ApplicationLinkService {
 
         //check if there is already an application link of supplied type and if yes, remove it
         Class<? extends ApplicationType> appType = applicationType != null ? applicationType.getClass() : null;
-        ApplicationLink primaryApplicationLink = applicationLinkService.getPrimaryApplicationLink(appType);
+        ApplicationLink primaryApplicationLink = mutatingApplicationLinkService.getPrimaryApplicationLink(appType);
         if (primaryApplicationLink != null) {
             log.info("An existing application link configuration '{}' was found and is removed now before adding the new configuration", primaryApplicationLink.getName());
-            applicationLinkService.deleteApplicationLink(primaryApplicationLink);
+            mutatingApplicationLinkService.deleteApplicationLink(primaryApplicationLink);
         }
 
         //add new application link
-        ApplicationLink applicationLink = applicationLinkService.createApplicationLink(applicationType, linkDetails);
-        applicationLinkService.configureAuthenticationForApplicationLink(applicationLink,
+        ApplicationLink applicationLink = mutatingApplicationLinkService.createApplicationLink(applicationType, linkDetails);
+        mutatingApplicationLinkService.configureAuthenticationForApplicationLink(applicationLink,
                 new DefaultAuthenticationScenario(), linkBean.getUsername(), linkBean.getPassword());
 
         return applicationLink;

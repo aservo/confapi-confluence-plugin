@@ -99,7 +99,7 @@ public class UserDirectoryResource {
     public Response addDirectory(@QueryParam("test") Boolean testConnection, UserDirectoryBean directory) {
         final ErrorCollection errorCollection = new ErrorCollection();
         try {
-            boolean test = testConnection == null ? true : testConnection;
+            boolean test = testConnection == null || Boolean.TRUE.equals(testConnection);
             UserDirectoryBean addDirectory = directoryService.addDirectory(directory, test);
             return Response.ok(addDirectory).build();
         } catch (Exception e) {

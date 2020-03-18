@@ -1,10 +1,10 @@
 package de.aservo.atlassian.confluence.confapi.rest;
 
 import com.sun.jersey.spi.container.ResourceFilters;
+import de.aservo.atlassian.confapi.model.ErrorCollection;
 import de.aservo.atlassian.confapi.model.UserDirectoryBean;
 import de.aservo.atlassian.confapi.service.UserDirectoryService;
 import de.aservo.atlassian.confluence.confapi.filter.AdminOnlyResourceFilter;
-import de.aservo.atlassian.confluence.confapi.model.ErrorCollection;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;

@@ -1,16 +1,10 @@
 package de.aservo.atlassian.confluence.confapi.rest;
 
 import com.atlassian.mail.MailException;
-import com.atlassian.mail.server.DefaultTestPopMailServerImpl;
-import com.atlassian.mail.server.DefaultTestSmtpMailServerImpl;
-import com.atlassian.mail.server.MailServerManager;
-import com.atlassian.mail.server.OtherTestPopMailServerImpl;
-import com.atlassian.mail.server.OtherTestSmtpMailServerImpl;
-import com.atlassian.mail.server.PopMailServer;
-import com.atlassian.mail.server.SMTPMailServer;
+import com.atlassian.mail.server.*;
+import de.aservo.atlassian.confapi.model.ErrorCollection;
 import de.aservo.atlassian.confluence.confapi.model.PopMailServerBean;
 import de.aservo.atlassian.confluence.confapi.model.SmtpMailServerBean;
-import de.aservo.atlassian.confluence.confapi.model.ErrorCollection;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;

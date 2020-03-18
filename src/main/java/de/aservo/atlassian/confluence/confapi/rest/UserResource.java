@@ -1,8 +1,8 @@
 package de.aservo.atlassian.confluence.confapi.rest;
 
 import com.sun.jersey.spi.container.ResourceFilters;
+import de.aservo.atlassian.confapi.model.ErrorCollection;
 import de.aservo.atlassian.confluence.confapi.filter.AdminOnlyResourceFilter;
-import de.aservo.atlassian.confluence.confapi.model.ErrorCollection;
 import de.aservo.atlassian.confluence.confapi.model.UserBean;
 import de.aservo.atlassian.confluence.confapi.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;

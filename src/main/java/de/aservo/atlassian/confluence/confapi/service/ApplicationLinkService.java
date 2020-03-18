@@ -16,7 +16,6 @@ import com.atlassian.applinks.spi.util.TypeAccessor;
 import com.atlassian.plugin.spring.scanner.annotation.component.ConfluenceComponent;
 import com.atlassian.plugin.spring.scanner.annotation.export.ExportAsService;
 import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
-import de.aservo.atlassian.confapi.service.BeanValidationService;
 import de.aservo.atlassian.confluence.confapi.model.ApplicationLinkBean;
 import de.aservo.atlassian.confluence.confapi.model.ApplicationLinkTypes;
 import de.aservo.atlassian.confluence.confapi.model.DefaultAuthenticationScenario;
@@ -28,6 +27,8 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+
+import static de.aservo.atlassian.confapi.util.BeanValidationUtil.validate;
 
 /**
  * The type Application link service.
@@ -76,7 +77,7 @@ public class ApplicationLinkService {
      */
     public ApplicationLink addApplicationLink(ApplicationLinkBean linkBean) throws URISyntaxException, ManifestNotFoundException, AuthenticationConfigurationException {
         //preparations
-        BeanValidationService.validate(linkBean);
+        validate(linkBean);
         ApplicationLinkDetails linkDetails = linkBean.toApplicationLinkDetails();
         ApplicationType applicationType = buildApplicationType(linkBean.getLinkType());
 

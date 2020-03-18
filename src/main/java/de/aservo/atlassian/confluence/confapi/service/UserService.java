@@ -9,12 +9,13 @@ import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
 import com.atlassian.user.EntityException;
 import com.atlassian.user.User;
 import com.atlassian.user.UserManager;
-import de.aservo.atlassian.confapi.service.BeanValidationService;
 import de.aservo.atlassian.confluence.confapi.model.UserBean;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import static de.aservo.atlassian.confapi.util.BeanValidationUtil.validate;
 
 /**
  * The type User service.
@@ -63,7 +64,7 @@ public class UserService {
      * @throws UserNotFoundException  the user not found exception
      */
     public UserBean updateUser(UserBean user) throws EntityException, UserNotFoundException, IllegalAccessException {
-        BeanValidationService.validate(user);
+        validate(user);
         User atlUser = userManager.getUser(user.getUsername());
         if (atlUser instanceof ConfluenceUserImpl) {
             ConfluenceUserImpl confluenceUser = (ConfluenceUserImpl) atlUser;

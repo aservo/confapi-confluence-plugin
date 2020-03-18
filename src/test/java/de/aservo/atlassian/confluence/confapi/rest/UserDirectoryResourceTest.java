@@ -34,7 +34,7 @@ public class UserDirectoryResourceTest {
     @Test
     public void testGetDirectories() {
         Directory directory = createDirectory();
-        UserDirectoryBean initialDirectoryBean = UserDirectoryBean.buildUserDirectoryBean(directory);
+        UserDirectoryBean initialDirectoryBean = UserDirectoryBean.from(directory);
 
         doReturn(Collections.singletonList(initialDirectoryBean)).when(userDirectoryService).getDirectories();
 
@@ -48,7 +48,7 @@ public class UserDirectoryResourceTest {
     @Test
     public void testAddDirectory() throws DirectoryCurrentlySynchronisingException {
         Directory directory = createDirectory();
-        UserDirectoryBean directoryBean = UserDirectoryBean.buildUserDirectoryBean(directory);
+        UserDirectoryBean directoryBean = UserDirectoryBean.from(directory);
         directoryBean.setCrowdUrl("http://localhost");
         directoryBean.setClientName("confluence-client");
         directoryBean.setAppPassword("test");

@@ -5,6 +5,7 @@ import com.atlassian.confluence.user.AuthenticatedUserThreadLocal;
 import com.atlassian.confluence.user.ConfluenceUserImpl;
 import com.atlassian.plugins.rest.common.security.AuthenticationRequiredException;
 import com.atlassian.plugins.rest.common.security.AuthorisationException;
+import com.sun.jersey.spi.container.ContainerRequest;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,6 +14,8 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import static org.easymock.EasyMock.expect;
+import static org.junit.Assert.*;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -32,6 +35,12 @@ public class AdminOnlyResourceFilterTest {
         filter = new AdminOnlyResourceFilter(permissionManager);
     }
 
+    @Test
+    public void testFilterDefaults() {
+        assertNull(filter.getResponseFilter());
+        assertEquals(filter, filter.getRequestFilter());
+    }
+
     @Test(expected = AuthenticationRequiredException.class)
     public void testAdminAccessNoUser() {
         filter.filter(null);
@@ -45,7 +54,8 @@ public class AdminOnlyResourceFilterTest {
 
         when(permissionManager.isConfluenceAdministrator(user)).thenReturn(Boolean.TRUE);
 
-        filter.filter(null);
+        ContainerRequest filterResponse = filter.filter(null);
+        assertNull(filterResponse);
     }
 
     @Test(expected = AuthorisationException.class)
@@ -56,6 +66,6 @@ public class AdminOnlyResourceFilterTest {
 
         when(permissionManager.isConfluenceAdministrator(user)).thenReturn(Boolean.FALSE);
 
-        filter.filter(null);
+        filter.filter(any(ContainerRequest.class));
     }
 }

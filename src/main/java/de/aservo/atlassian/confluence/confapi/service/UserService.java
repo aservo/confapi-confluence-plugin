@@ -1,5 +1,6 @@
 package de.aservo.atlassian.confluence.confapi.service;
 
+import com.atlassian.confluence.user.ConfluenceUser;
 import com.atlassian.confluence.user.ConfluenceUserImpl;
 import com.atlassian.crowd.embedded.atlassianuser.EmbeddedCrowdUser;
 import com.atlassian.crowd.exception.UserNotFoundException;
@@ -10,7 +11,6 @@ import com.atlassian.user.EntityException;
 import com.atlassian.user.User;
 import com.atlassian.user.UserManager;
 import de.aservo.atlassian.confluence.confapi.model.UserBean;
-import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,78 +31,77 @@ public class UserService {
     /**
      * Instantiates a new User service.
      *
-     * @param userManager the user manager
+     * @param userManager the userBean manager
      */
     public UserService(@ComponentImport UserManager userManager) {
         this.userManager = userManager;
     }
 
     /**
-     * Gets user.
+     * Gets userBean.
      *
      * @param username the username
-     * @return the user
+     * @return the userBean
      * @throws EntityException       the entity exception
-     * @throws UserNotFoundException the user not found exception
+     * @throws UserNotFoundException the userBean not found exception
      */
     public UserBean getUser(String username) throws EntityException, UserNotFoundException {
         User user = userManager.getUser(username);
-        if (user instanceof ConfluenceUserImpl) {
-            return new UserBean((ConfluenceUserImpl)user);
+        if (user instanceof ConfluenceUser) {
+            return new UserBean(user);
         } else {
             throw new UserNotFoundException(username);
         }
     }
 
     /**
-     * Update user bean.
+     * Update userBean.
      *
-     * @param user the user
-     * @return the user bean
+     * @param userBean the userBean
+     * @return the userBean
      * @throws EntityException        the entity exception
      * @throws IllegalAccessException the illegal access exception
-     * @throws UserNotFoundException  the user not found exception
+     * @throws UserNotFoundException  the userBean not found exception
      */
-    public UserBean updateUser(UserBean user) throws EntityException, UserNotFoundException, IllegalAccessException {
-        validate(user);
-        User atlUser = userManager.getUser(user.getUsername());
-        if (atlUser instanceof ConfluenceUserImpl) {
-            ConfluenceUserImpl confluenceUser = (ConfluenceUserImpl) atlUser;
+    public UserBean updateUser(UserBean userBean) throws EntityException, UserNotFoundException, IllegalAccessException {
+        validate(userBean);
+        User user = userManager.getUser(userBean.getUsername());
+        if (user instanceof ConfluenceUser) {
+            String emailFieldName = "email";
+            ConfluenceUserImpl confluenceUser = (ConfluenceUserImpl) user;
             try {
                 //email field can only be modified through reflection because it is private
-                FieldUtils.writeDeclaredField(confluenceUser, "email", user.getEmail(), true);
+                FieldUtils.writeDeclaredField(confluenceUser, emailFieldName, userBean.getEmail(), true);
                 userManager.saveUser(confluenceUser);
             } catch (Exception e) {
                 //field "email" is only available from v6.15.10, for backwards compatibility try with backingUser
-                log.debug("didi not find field 'email' in class ConfluenceUserImpl, trying with field 'emailAddress' of backingUser...");
                 User backingUser = confluenceUser.getBackingUser();
                 if (backingUser instanceof EmbeddedCrowdUser) {
-                    EmbeddedCrowdUser crowdUser = (EmbeddedCrowdUser) backingUser;
-                    FieldUtils.writeDeclaredField(crowdUser, "emailAddress", user.getEmail(), true);
-                    userManager.saveUser(crowdUser);
-                } else {
-                    throw new NotImplementedException("no handler implemented for type " + backingUser.getClass());
+                    emailFieldName = "emailAddress";
                 }
+                log.debug("did not find field 'email' in class {}, trying with field '{}' of backingUser {} ...", confluenceUser.getClass(), emailFieldName, backingUser.getClass());
+                FieldUtils.writeDeclaredField(backingUser, emailFieldName, userBean.getEmail(), true);
+                userManager.saveUser(backingUser);
             }
-            return getUser(user.getUsername());
+            return getUser(userBean.getUsername());
         } else {
-            throw new UserNotFoundException(user.getUsername());
+            throw new UserNotFoundException(userBean.getUsername());
         }
     }
 
     /**
-     * Update user password.
+     * Update userBean password.
      *
      * @param username the username
      * @param password the password
-     * @return the user bean
+     * @return the userBean bean
      * @throws EntityException       the entity exception
-     * @throws UserNotFoundException the user not found exception
+     * @throws UserNotFoundException the userBean not found exception
      */
     public UserBean updateUserPassword(String username, String password) throws EntityException, UserNotFoundException {
-        User atlUser = userManager.getUser(username);
-        if (atlUser instanceof ConfluenceUserImpl) {
-            userManager.alterPassword(atlUser, password);
+        User user = userManager.getUser(username);
+        if (user instanceof ConfluenceUser) {
+            userManager.alterPassword(user, password);
             return getUser(username);
         } else {
             throw new UserNotFoundException(username);

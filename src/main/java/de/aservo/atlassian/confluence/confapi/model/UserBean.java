@@ -1,6 +1,6 @@
 package de.aservo.atlassian.confluence.confapi.model;
 
-import com.atlassian.confluence.user.ConfluenceUserImpl;
+import com.atlassian.user.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -35,7 +35,7 @@ public class UserBean {
      *
      * @param confluenceUser the confluence user
      */
-    public UserBean(ConfluenceUserImpl confluenceUser) {
+    public UserBean(User confluenceUser) {
         username = confluenceUser.getName();
         fullName = confluenceUser.getFullName();
         email = confluenceUser.getEmail();

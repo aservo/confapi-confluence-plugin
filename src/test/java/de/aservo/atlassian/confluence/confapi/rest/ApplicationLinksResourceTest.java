@@ -1,5 +1,6 @@
 package de.aservo.atlassian.confluence.confapi.rest;
 
+import de.aservo.atlassian.confapi.model.ErrorCollection;
 import de.aservo.atlassian.confluence.confapi.model.ApplicationLinkBean;
 import de.aservo.atlassian.confluence.confapi.service.ApplicationLinkService;
 import org.junit.Before;
@@ -13,7 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ApplicationLinksResourceTest {
@@ -44,6 +47,17 @@ public class ApplicationLinksResourceTest {
     }
 
     @Test
+    public void testGetApplicationLinksWithError() {
+        doThrow(new RuntimeException()).when(applicationLinkService).getApplicationLinks();
+
+        final Response response = resource.getApplicationLinks();
+        assertEquals(400, response.getStatus());
+
+        assertNotNull(response.getEntity());
+        assertEquals(ErrorCollection.class, response.getEntity().getClass());
+    }
+
+    @Test
     public void testPostApplicationLink() {
         ApplicationLinkBean bean = createApplicationLinkBean();
         List<ApplicationLinkBean> linkBeans = new ArrayList<>();
@@ -57,6 +71,19 @@ public class ApplicationLinksResourceTest {
         @SuppressWarnings("unchecked") final List<ApplicationLinkBean> beans = (List<ApplicationLinkBean>) response.getEntity();
 
         assertEquals(beans.get(0), bean);
+    }
+
+    @Test
+    public void testPostApplicationLinkWithError() {
+        ApplicationLinkBean bean = createApplicationLinkBean();
+
+        doThrow(new RuntimeException()).when(applicationLinkService).getApplicationLinks();
+
+        final Response response = resource.addApplicationLink(bean);
+        assertEquals(400, response.getStatus());
+
+        assertNotNull(response.getEntity());
+        assertEquals(ErrorCollection.class, response.getEntity().getClass());
     }
 
     private ApplicationLinkBean createApplicationLinkBean() {

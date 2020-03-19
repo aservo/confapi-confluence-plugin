@@ -10,6 +10,7 @@ import com.atlassian.gadgets.directory.spi.ExternalGadgetSpecStore;
 import com.atlassian.gadgets.spec.GadgetSpec;
 import com.atlassian.gadgets.spec.GadgetSpecFactory;
 import com.atlassian.sal.api.user.UserKey;
+import org.apache.commons.lang.NullArgumentException;
 import org.apache.commons.lang.reflect.FieldUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -58,13 +59,18 @@ public class ExternalGadgetServiceTest {
         assertEquals(registeredExternalGadgetURls.get(0), externalGadgetSpec.getSpecUri().toString());
     }
 
+    @Test(expected = NullArgumentException.class)
+    public void testAddRegisteredGadgetUrisWithEmptyUrl() throws URISyntaxException {
+        externalGadgetsService.addExternalGadgetUrl(null, Boolean.FALSE);
+    }
+
     @Test
-    public void testAddRegisteredGadgetUrisWithoutConnectionTest() throws URISyntaxException, IllegalAccessException {
+    public void testAddRegisteredGadgetUrisWithoutConnectionTest() throws URISyntaxException {
         ExternalGadgetSpec externalGadgetSpec = createExternalGadgetSpec();
 
         externalGadgetsService.addExternalGadgetUrl(externalGadgetSpec.getSpecUri().toString(), Boolean.FALSE);
 
-        testAddRegisteredGadgetUrisWithConnectionTest();
+        testGetRegisteredGadgetUris();
     }
 
     @Test

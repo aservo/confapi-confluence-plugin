@@ -1,8 +1,10 @@
 package de.aservo.atlassian.confluence.confapi.rest;
 
 import com.atlassian.confluence.settings.setup.DefaultProductLicenseDetailsView;
+import com.atlassian.sal.api.i18n.InvalidOperationException;
 import com.atlassian.sal.api.license.LicenseHandler;
 import com.atlassian.sal.api.license.SingleProductLicenseDetailsView;
+import de.aservo.atlassian.confapi.model.ErrorCollection;
 import de.aservo.atlassian.confluence.confapi.model.LicenseBean;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,8 +15,8 @@ import javax.ws.rs.core.Response;
 import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class LicenseResourceTest {
@@ -42,6 +44,17 @@ public class LicenseResourceTest {
     }
 
     @Test
+    public void testGetLicenseWithError() {
+        doThrow(new RuntimeException()).when(licenseHandler).getProductLicenseDetails(LicenceResource.CONFLUENCE_APP_ID);
+
+        final Response response = resource.getLicense();
+        assertEquals(400, response.getStatus());
+
+        assertNotNull(response.getEntity());
+        assertEquals(ErrorCollection.class, response.getEntity().getClass());
+    }
+
+    @Test
     public void testSetLicense() {
         SingleProductLicenseDetailsView view = createLicenseDetails();
 
@@ -49,6 +62,17 @@ public class LicenseResourceTest {
 
         final Response response = resource.addLicense("ABCDEFG");
         assertEquals(200, response.getStatus());
+    }
+
+    @Test
+    public void testSetLicenseWithError() throws InvalidOperationException {
+        doThrow(new RuntimeException()).when(licenseHandler).addProductLicense(any(String.class), any(String.class));
+
+        final Response response = resource.addLicense("ABCDEFG");
+        assertEquals(400, response.getStatus());
+
+        assertNotNull(response.getEntity());
+        assertEquals(ErrorCollection.class, response.getEntity().getClass());
     }
 
     private SingleProductLicenseDetailsView createLicenseDetails() {

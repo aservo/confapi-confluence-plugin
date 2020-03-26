@@ -209,6 +209,191 @@ ifdef::internal-generation[]
 endif::internal-generation[]
 
 
+[.Gadgets]
+=== Gadgets
+
+
+[.addGadget]
+==== addGadget
+    
+`POST /gadgets/external`
+
+Adds a new external gadget link
+
+===== Description 
+
+Upon successful request, returns a list of `String` containing all configured gadget configuration urls
+
+
+// markup not found, no include::{specDir}gadgets/external/POST/spec.adoc[opts=optional]
+
+
+
+===== Parameters
+
+
+===== Body Parameter
+
+[cols="2,3,1,1,1"]
+|===         
+|Name| Description| Required| Default| Pattern
+
+| body 
+|  <<string>> 
+| - 
+|  
+|  
+
+|===         
+
+
+
+====== Query Parameters
+
+[cols="2,3,1,1,1"]
+|===         
+|Name| Description| Required| Default| Pattern
+
+| test-gadget-url 
+|   
+| - 
+| true 
+|  
+
+|===         
+
+
+===== Return Type
+
+
+<<String>>
+
+
+===== Content Type
+
+* application/json
+
+===== Responses
+
+.http response codes
+[cols="2,3,1"]
+|===         
+| Code | Message | Datatype 
+
+
+| 200
+| 
+|  <<String>>
+
+
+| 204
+| Provided gadget link was null or empty. Operation is skipped
+|  <<>>
+
+
+| 400
+| 
+|  <<ErrorCollection>>
+
+|===         
+
+===== Samples
+
+
+// markup not found, no include::{snippetDir}gadgets/external/POST/http-request.adoc[opts=optional]
+
+
+// markup not found, no include::{snippetDir}gadgets/external/POST/http-response.adoc[opts=optional]
+
+
+
+// file not found, no * wiremock data link :gadgets/external/POST/POST.json[]
+
+
+ifdef::internal-generation[]
+===== Implementation
+
+// markup not found, no include::{specDir}gadgets/external/POST/implementation.adoc[opts=optional]
+
+
+endif::internal-generation[]
+
+
+[.getGadgets]
+==== getGadgets
+    
+`GET /gadgets/external`
+
+Retrieves currently configured external gadgets
+
+===== Description 
+
+Upon successful request, returns a list of `String` containing all configured gadget configuration urls
+
+
+// markup not found, no include::{specDir}gadgets/external/GET/spec.adoc[opts=optional]
+
+
+
+===== Parameters
+
+
+
+
+
+
+
+===== Return Type
+
+
+<<String>>
+
+
+===== Content Type
+
+* application/json
+
+===== Responses
+
+.http response codes
+[cols="2,3,1"]
+|===         
+| Code | Message | Datatype 
+
+
+| 200
+| 
+|  <<String>>
+
+
+| 400
+| 
+|  <<ErrorCollection>>
+
+|===         
+
+===== Samples
+
+
+// markup not found, no include::{snippetDir}gadgets/external/GET/http-request.adoc[opts=optional]
+
+
+// markup not found, no include::{snippetDir}gadgets/external/GET/http-response.adoc[opts=optional]
+
+
+
+// file not found, no * wiremock data link :gadgets/external/GET/GET.json[]
+
+
+ifdef::internal-generation[]
+===== Implementation
+
+// markup not found, no include::{specDir}gadgets/external/GET/implementation.adoc[opts=optional]
+
+
+endif::internal-generation[]
+
+
 [.Licenses]
 === Licenses
 

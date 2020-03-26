@@ -31,6 +31,171 @@ This plugin provides methods for accessing configuration for Confluence.
 == Endpoints
 
 
+[.ApplicationLinks]
+=== ApplicationLinks
+
+
+[.addApplicationLink]
+==== addApplicationLink
+    
+`PUT /application-links`
+
+Adds a new application link
+
+===== Description 
+
+Upon successful request, returns a list of all configured `ApplicationLinkBean` object
+
+
+// markup not found, no include::{specDir}application-links/PUT/spec.adoc[opts=optional]
+
+
+
+===== Parameters
+
+
+===== Body Parameter
+
+[cols="2,3,1,1,1"]
+|===         
+|Name| Description| Required| Default| Pattern
+
+| ApplicationLinkBean 
+|  <<ApplicationLinkBean>> 
+| - 
+|  
+|  
+
+|===         
+
+
+
+
+
+===== Return Type
+
+<<ApplicationLinkBean>>
+
+
+===== Content Type
+
+* application/json
+
+===== Responses
+
+.http response codes
+[cols="2,3,1"]
+|===         
+| Code | Message | Datatype 
+
+
+| 200
+| 
+|  <<ApplicationLinkBean>>
+
+
+| 400
+| 
+|  <<ErrorCollection>>
+
+|===         
+
+===== Samples
+
+
+// markup not found, no include::{snippetDir}application-links/PUT/http-request.adoc[opts=optional]
+
+
+// markup not found, no include::{snippetDir}application-links/PUT/http-response.adoc[opts=optional]
+
+
+
+// file not found, no * wiremock data link :application-links/PUT/PUT.json[]
+
+
+ifdef::internal-generation[]
+===== Implementation
+
+// markup not found, no include::{specDir}application-links/PUT/implementation.adoc[opts=optional]
+
+
+endif::internal-generation[]
+
+
+[.getApplicationLinks]
+==== getApplicationLinks
+    
+`GET /application-links`
+
+Retrieves currently configured application links
+
+===== Description 
+
+Upon successful request, creates a list of `ApplicationLinkBean` objects
+
+
+// markup not found, no include::{specDir}application-links/GET/spec.adoc[opts=optional]
+
+
+
+===== Parameters
+
+
+
+
+
+
+
+===== Return Type
+
+<<ApplicationLinkBean>>
+
+
+===== Content Type
+
+* application/json
+
+===== Responses
+
+.http response codes
+[cols="2,3,1"]
+|===         
+| Code | Message | Datatype 
+
+
+| 200
+| 
+|  <<ApplicationLinkBean>>
+
+
+| 400
+| 
+|  <<ErrorCollection>>
+
+|===         
+
+===== Samples
+
+
+// markup not found, no include::{snippetDir}application-links/GET/http-request.adoc[opts=optional]
+
+
+// markup not found, no include::{snippetDir}application-links/GET/http-response.adoc[opts=optional]
+
+
+
+// file not found, no * wiremock data link :application-links/GET/GET.json[]
+
+
+ifdef::internal-generation[]
+===== Implementation
+
+// markup not found, no include::{specDir}application-links/GET/implementation.adoc[opts=optional]
+
+
+endif::internal-generation[]
+
+
 [.Directories]
 === Directories
 
@@ -1109,6 +1274,73 @@ endif::internal-generation[]
 
 [#models]
 == Models
+
+
+[#ApplicationLinkBean]
+=== _ApplicationLinkBean_ 
+
+
+
+[.fields-ApplicationLinkBean]
+[cols="2,1,2,4,1"]
+|===         
+| Field Name| Required| Type| Description| Format
+
+| serverId 
+|  
+| String  
+| 
+|  
+
+| appType 
+|  
+| String  
+| 
+|  
+
+| linkType 
+| X 
+| String  
+| 
+|  _Enum:_ BAMBOO, JIRA, BITBUCKET, CONFLUENCE, FISHEYE, CROWD, 
+
+| name 
+| X 
+| String  
+| 
+|  
+
+| displayUrl 
+| X 
+| String  
+| 
+|  
+
+| rpcUrl 
+| X 
+| String  
+| 
+|  
+
+| primary 
+|  
+| Boolean  
+| 
+|  
+
+| username 
+|  
+| String  
+| 
+|  
+
+| password 
+|  
+| String  
+| 
+|  
+
+|===
 
 
 [#DirectoryBean]

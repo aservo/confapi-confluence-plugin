@@ -4,6 +4,7 @@ import com.atlassian.crowd.embedded.api.Directory;
 import com.atlassian.crowd.embedded.api.DirectoryType;
 import com.atlassian.crowd.exception.DirectoryCurrentlySynchronisingException;
 import com.atlassian.crowd.model.directory.DirectoryImpl;
+import de.aservo.atlassian.confapi.model.DirectoriesBean;
 import de.aservo.atlassian.confapi.model.DirectoryBean;
 import de.aservo.atlassian.confapi.model.ErrorCollection;
 import de.aservo.atlassian.confapi.service.api.DirectoryService;
@@ -15,7 +16,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import javax.ws.rs.core.Response;
 import java.util.Collections;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -44,9 +44,9 @@ public class DirectoriesResourceTest {
 
         final Response response = resource.getDirectories();
         assertEquals(200, response.getStatus());
-        @SuppressWarnings("unchecked") final List<DirectoryBean> DirectoryBeans = (List<DirectoryBean>) response.getEntity();
+        @SuppressWarnings("unchecked") final DirectoriesBean directoriesBean = (DirectoriesBean) response.getEntity();
 
-        assertEquals(initialDirectoryBean, DirectoryBeans.get(0));
+        assertEquals(initialDirectoryBean, directoriesBean.getDirectories().iterator().next());
     }
 
     @Test

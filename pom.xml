@@ -9,7 +9,7 @@
     <parent>
         <groupId>de.aservo</groupId>
         <artifactId>parent-pom</artifactId>
-        <version>0.0.7</version>
+        <version>0.0.9</version>
     </parent>
 
     <groupId>de.aservo.atlassian</groupId>
@@ -63,7 +63,7 @@
         <atlassian.plugin.key>${project.groupId}.${project.artifactId}</atlassian.plugin.key>
         <atlassian.spring.scanner.version>2.1.5</atlassian.spring.scanner.version>
         <confapi-commons.version>0.0.9-SNAPSHOT</confapi-commons.version>
-        <hibernate-validator.version>5.2.1.Final</hibernate-validator.version>
+        <hibernate-validator.version>5.2.4.Final</hibernate-validator.version>
         <javax.el-api.version>2.2.4</javax.el-api.version>
         <junit.version>4.12</junit.version>
         <lombok.version>1.18.10</lombok.version>

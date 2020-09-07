@@ -9,7 +9,7 @@
     <parent>
         <groupId>de.aservo</groupId>
         <artifactId>parent-pom</artifactId>
-        <version>0.0.10</version>
+        <version>0.0.11</version>
     </parent>
 
     <artifactId>confapi-confluence-plugin</artifactId>

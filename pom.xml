@@ -63,7 +63,7 @@
         <confluence.version>7.15.0</confluence.version>
         <!-- other properties -->
         <ajp.port>8109</ajp.port>
-        <amps.version>8.0.2</amps.version>
+        <amps.version>8.2.3</amps.version>
         <atlassian.gadgets.version>4.3.2.1</atlassian.gadgets.version>
         <atlassian.plugin.key>${project.groupId}.${project.artifactId}</atlassian.plugin.key>
         <atlassian.spring.scanner.version>2.1.5</atlassian.spring.scanner.version>

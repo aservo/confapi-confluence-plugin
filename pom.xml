@@ -60,7 +60,7 @@
     </developers>
 
     <properties>
-        <confluence.version>7.5.0</confluence.version>
+        <confluence.version>7.15.0</confluence.version>
         <!-- other properties -->
         <ajp.port>8109</ajp.port>
         <amps.version>8.0.2</amps.version>
